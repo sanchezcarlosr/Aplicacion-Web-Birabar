@@ -1,0 +1,74 @@
+<div class="black-background text-light">
+    <div class="container pt-4 pb-5">
+        <h4 class="text-center mb-3">Gestión de la Carta</h4>
+        <div class="input-group mb-4">
+            <button class="btn btn-black bi bi-search" type="button"> Buscar producto</button>
+            <input type="text" class="form-control" placeholder="Ingresar el nombre de un producto a buscar. Ejemplo: Hamburguesa" [(ngModel)]="searchProducto" (ngModelChange)="buscarPorProducto()">
+        </div>
+        <div class="text-center border rounded-3 m-auto p-5" style="width: 300px;" *ngIf="listaProductos.length==0">
+            <h4 class="bi bi-exclamation-octagon"></h4>
+            <h6 class="mb-3">No existen Categorias.</h6>
+            <a class="btn btn-success bg-gradient bi bi-plus-circle" href="/alta-producto/0"> Crear producto</a>
+        </div>
+        <div class="text-center table-responsive" *ngIf="listaProductos.length!=0">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Nombre del producto</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Ver m&aacute;s</th>
+                        <th scope="col">Disponible</th>
+                        <th scope="col">No disponible</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let p of listaProductos">
+                        <td><img [src]="p.imagen" style="width: 30px;height:30px;"></td>
+                        <td *ngIf="p.disponible===false"><del>{{p.nombreProducto}}</del></td>
+                        <td *ngIf="p.disponible===true">{{p.nombreProducto}}</td>
+                        <td>{{p.precio | currency:'':'symbol':'0.0-4'}}</td>
+                        <td>
+                            <a class="btn btn-primary bi bi-eye producto" data-bs-toggle="modal" data-bs-target="#imagenModal" (click)="verProducto(p)"
+                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .75rem; margin-top: 0;"></a>
+                        </td>
+
+                        <td style="font-size: 18px;">
+                            <a class="btn btn-success bi bi-check2 producto" (click)="habilitarProducto(p)"
+                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .75rem; margin-right: 3px;"></a>
+                        </td>
+
+                        <td style="font-size: 18px;">
+                            <a class="btn btn-danger bi bi-x-square producto" (click)="deshabilitarProducto(p)"
+                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .75rem; margin-right: 3px;"></a>
+                        </td>
+                    </tr>   
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Fin del Formulario -->
+<div class="modal fade" id="imagenModal" tabindex="-1" aria-labelledby="imagenModal" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content black-background">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-white fw-bold">Mas informaci&oacute;n</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mx-auto text-center text-white">
+                    <img [src]="producto.imagen" class="card-img-top" alt="...">
+                            <div class="card-body">
+                            
+                            <h5 class="card-title">{{producto.nombreProducto}}</h5>
+                            <p class="card-text p-3">{{producto.descripcion}}</p>
+                            </div>
+                            
+                            <p class="p-3">{{producto.precio | currency:'':'symbol':'0.0-4'}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

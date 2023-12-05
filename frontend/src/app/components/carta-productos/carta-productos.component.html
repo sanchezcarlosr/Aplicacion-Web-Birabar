@@ -1,0 +1,19 @@
+<div class="black-background">
+  <section class="menus-area">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4" *ngFor="let producto of listaProductos">
+          <div [ngClass]="{'single-menu': true, 'black-dark-background': true, 'text-white': true, 'unavailable': !producto.disponible}">
+            <span class="" *ngIf="producto.disponible">{{ producto.precio | currency:'USD':'symbol':'1.0-0' }}</span>
+            <span class="" *ngIf="!producto.disponible">Sin disponibilidad</span>
+            <img src="{{ producto.imagen }}" alt="{{ producto.nombreProducto }}">
+            <div class="menu-content">
+              <h4>{{ producto.nombreProducto }}</h4>
+              <p>{{ producto.descripcion }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

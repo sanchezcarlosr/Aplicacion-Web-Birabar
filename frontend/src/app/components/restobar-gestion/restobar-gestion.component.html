@@ -1,0 +1,41 @@
+<div class="black-background text-light">
+    <div class="container pt-4 pb-5">
+        <h4 class="text-center">Gestión de Restobares</h4>
+        <p class="text-white text-center mb-4">Gestiona los datos de tu negocio, incluyendo links de pago que serán enviados a tus clientes en cada pedido.</p>
+        <div class="input-group mb-4">
+            <a class="btn black-background bg-gradient text-white bi bi-plus-circle" href="/restobar-form/0"> Crear Restobar</a>
+            <button class="btn black-background bg-gradient text-white bi bi-search" type="button"> Buscar Restobar</button>
+            <input type="text" class="form-control" placeholder="Ingresar el nombre del Restobar. Ejemplo: Birabar" [(ngModel)]="searchRestobar">
+        </div>
+        <div class="text-center border rounded-3 m-auto p-5" style="width: 300px;" *ngIf="restobares.length==0">
+            <h4 class="bi bi-exclamation-octagon"></h4>
+            <h6 class="mb-3">No existen Locales.</h6>
+            <a class="btn btn-light bi bi-plus-circle" href="/restobar-form/0"> Crear Restobar</a>
+        </div>
+        <div class="text-center table-responsive" *ngIf="restobares.length!=0">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre del local</th>
+                        <th scope="col">Servicio Delivery</th>
+                        <th scope="col">Estado local</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let restobar of restobares">
+                        <td>{{restobar.nombreLocal}}</td>
+                        <td>{{ restobar.delivery ? 'Disponible' : 'No disponible' }}</td>
+                        <td>{{ restobar.abierto ? 'Abierto' : 'Cerrado' }}</td>
+                        <td style="font-size: 18px;">
+                            <a class="btn btn-primary bi bi-pencil-square" href="/restobar-form/{{restobar._id}}"
+                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .75rem; margin-right: 3px;"></a>
+                            <a class="btn btn-danger bi bi-trash3" (click)="eliminarRestobar(restobar._id)"
+                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .75rem; margin-top: 0;"></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

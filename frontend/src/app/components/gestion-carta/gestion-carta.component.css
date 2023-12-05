@@ -1,0 +1,46 @@
+.black-background {
+    background-color: #202634;
+}
+
+.green-background {
+    background-color: #1fd08f;
+}
+
+.green-background:hover {
+    background-color: #2cf5ab;
+    color: #202634;
+}
+
+/*Las tarjetas y su contenido*/
+.producto{
+    border-radius: 3px;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    cursor: default;
+    transition: all 400ms ease;
+}
+
+.producto:hover{
+    box-shadow: 0 0.1rem 0.4rem rgba(0, 0, 0, 5);
+    transform: translateY(-5%);
+}
+.producto.contenido{
+    text-align: center;
+    padding: 10px;
+}
+
+.btn-black {
+    background: linear-gradient( #202634, #191e27);
+    color:#fff;
+}
+
+.btn-black:hover{
+    background: linear-gradient( #181d27, #13161d);
+}
+
+.modal-header,
+.modal-body,
+.modal-footer {
+    border-color: #202634;
+}

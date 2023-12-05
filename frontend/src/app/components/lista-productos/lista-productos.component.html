@@ -1,0 +1,29 @@
+<div class="black-background container-fluid p-5">
+    <div class="container-fluid col-8 p-5 justify-content-center">
+        <div class="row">
+            <aside class="col-xl-3 col-md-12 col-sm-12 col-2">
+                <h4 class="text-white fw-bold text-center">Categorias</h4>
+                <div *ngFor="let categori of listaCategorias" class="pt-2">
+                    <div class="form-control black-background bg-gradient producto rounded-3 border-black producto" (click)="filtrarProducto(categori._id)"><img [src]="categori.imagen" class="card-img-top">
+                        <div>
+                            <p class="text-white text-center fw-bold">{{categori.nombreCategoria}}</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            <article class="col-9 container-fluid">
+                <div class="row">
+                    <h5 class="text-white fw-bold text-center"><p *ngIf="categoria">{{categoria.nombreCategoria}}</p></h5>
+                    <div class="col-xl-4 col-md-6 col-sm-12 col-4 g-2" *ngFor="let producto of listaProductos">
+                        <button class="form-control bg-white text-white producto"><img [src]="producto.imagen" class="card-img-top"> 
+                            <div>
+                                <p class="text-black">{{producto.nombreProducto}}</p>
+                                <p class="text-black">{{producto.precio | currency:'':'symbol':'0.0-4'}}</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</div>

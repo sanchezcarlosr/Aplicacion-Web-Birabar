@@ -1,0 +1,42 @@
+.black-background {
+    background-color: #202634;
+}
+
+.green-background {
+    background-color: #1fd08f;
+}
+
+.green-background:hover {
+    background-color: #2cf5ab;
+    color: #202634;
+}
+
+.black-background {
+    background-color: #202634;
+}
+
+.btn-black {
+    background: linear-gradient( #202634, #191e27);
+}
+
+.btn-black:hover{
+    background: linear-gradient( #181d27, #13161d);
+}
+
+.col{
+    transition: all 400ms ease;
+}
+
+.col:hover{
+    transform: translateY(-5%);
+}
+
+.btn-primary, .btn-danger{
+    transition: all 400ms ease;
+}
+
+.btn-primary:hover, .btn-danger:hover
+{
+    box-shadow: 0 0.1rem 0.4rem rgba(0, 0, 0, 5);
+    transform: translateY(-5%);
+}

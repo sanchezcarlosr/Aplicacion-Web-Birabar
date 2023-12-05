@@ -1,0 +1,73 @@
+<nav class="navbar navbar-expand-lg black-background bg-gradient">
+  <div class="container-fluid">
+    <a [routerLink]="['principal']">
+      <img src="assets/images/homepage/birabar-logo.png" alt="Birabar" class="custom-logo">
+    </a>
+    <span class="text-warning fw-semibold" *ngIf="(loginService.rolLogged()==='Gestor')">GESTIÓN</span>
+    <span class="text-info fw-semibold" *ngIf="(loginService.rolLogged()==='Administrador')">ADMINISTRACIÓN</span>
+    <button class="navbar-toggler bg-secondary bg-gradient" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+    <div class="collapse navbar-collapse justify-content-center fw-semibold" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active text-white fs-6 mx-4" [routerLink]="['principal']">
+            <i class="fa-solid fa-house me-1"></i>Principal
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active text-white fs-6 mx-4" [routerLink]="['about-us-page']">
+            <i class="fa-solid fa-users me-1"></i>Nosotros
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active text-white fs-6 mx-4" [routerLink]="['local-info']">
+            <i class="fa-solid fa-phone-volume me-1"></i>Contacto
+          </a>
+        </li>
+        <li class="nav-item dropdown" *ngIf="(loginService.rolLogged()==='Gestor')">
+          <a class="nav-link dropdown-toggle text-white fs-6 mx-4" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-tasks me-1"></i>Gestión
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" [routerLink]="['gestion-productos']">Productos</a></li>
+            <li><a class="dropdown-item" [routerLink]="['gestion-carta']">Carta</a></li>
+            <li><a class="dropdown-item" [routerLink]="['comboGestion']">Combos</a></li>
+            <li><a class="dropdown-item" [routerLink]="['ofertaGestion']">Ofertas</a></li>
+            <li><a class="dropdown-item" [routerLink]="['gestion-whatsapp']">WhatssApp</a></li>
+            <li><a class="dropdown-item" [routerLink]="['gestion-restobar']">Restobar</a></li>
+            <li><a class="dropdown-item" [routerLink]="['pedidos/gestion']">Pedidos</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown" *ngIf="(loginService.rolLogged()==='Administrador')">
+          <a class="nav-link dropdown-toggle text-white fs-6 mx-4" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-clipboard me-1"></i>Administración
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" [routerLink]="['usuarioGestion']">Usuarios</a></li>
+            <li><a class="dropdown-item" [routerLink]="['reporte']">Reportes</a></li>
+            <li><a class="dropdown-item" [routerLink]="['ventas']">Ventas</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <button class="btn btn-sm green-background" *ngIf="!loginService.userLoggedIn()" [routerLink]="['login']">
+        <i class="fa-solid fa-user me-1"></i>Ingresar
+      </button>
+      <button class="btn btn-sm bg-white ms-1" *ngIf="!loginService.userLoggedIn()" [routerLink]="['registro']">
+        <i class="fa-solid fa-plus me-1"></i>Registrarse
+      </button>
+      <div class="btn-group" *ngIf="loginService.userLoggedIn()">
+        <button class="btn green-background" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fa-solid fa-user me-1"></i>{{loginService.userLogged()}}
+        </button>
+        <ul class=" dropdown-menu dropdown-menu-end">
+          <li><button class="dropdown-item" [routerLink]="['perfil']">Mi perfil</button></li>
+          <li><button class="dropdown-item" (click)="logout()">Salir</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

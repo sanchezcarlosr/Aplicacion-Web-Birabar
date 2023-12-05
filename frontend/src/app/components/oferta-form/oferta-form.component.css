@@ -1,0 +1,51 @@
+.black-background {
+    background-color: #202634;
+}
+
+.green-background {
+    background-color: #1fd08f;
+}
+
+.green-background:hover {
+    background-color: #2cf5ab;
+    color: #202634;
+}
+
+.green-background:disabled {
+    background-color: #179c6b;
+    color: #202634;
+}
+
+.nav-link {
+    text-align: center;
+    cursor: pointer;
+    border-bottom: 5px solid transparent;
+    color: #000;
+    color: white;
+}
+
+.nav-link.active {
+    border-bottom-color: #069460;
+    color: white;
+}
+
+.modal-header,
+.modal-body,
+.modal-footer {
+    border-color: #141a24;
+}
+
+.link-green {
+    cursor: pointer;
+    color: #1fd08f;
+}
+
+.link-green:hover {
+    color: #179164;
+}
+
+.modal-header,
+.modal-body,
+.modal-footer {
+    border-color: #202634;
+}

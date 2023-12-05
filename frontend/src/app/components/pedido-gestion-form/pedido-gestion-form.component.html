@@ -1,0 +1,67 @@
+<div class="black-dark-background">
+    <div class="container text-center pb-5">
+        <legend class="text-white mt-4 mb-4">Modificar Pedido</legend>
+
+        <form action="" class="col-md-8 offset-md-2">
+            <div class="row ">
+                <div class="col-md-6 mb-4">
+                    <label for="estado" class="text-white mb-2">Estado del pedido:</label>
+                    <select class="form-select" aria-label="Default select example" id="estado" name="estadoS"
+                        [(ngModel)]="pedido.estado" required>
+                        <option [value]="pedido.estado">{{pedido.estado}}</option>
+                        <option *ngFor="let option of ['Pendiente', 'En curso', 'Finalizado', 'Cancelado']"
+                            [value]="option" [hidden]="option === pedido.estado">{{option}}</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <label for="demora" class="text-white mb-2">Demora:</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="demora" name="demoraS" [(ngModel)]="pedido.demora" min="0" required>
+                        <span class="input-group-text" id="basic-addon2">(minutos)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <label for="modalidad" class="text-white mb-2">Tipo de servicio:</label>
+                    <select class="form-select" aria-label="Default select example" id="modalidad" name="modalidadS"
+                        [(ngModel)]="pedido.modalidad" required>
+                        <option [value]="pedido.modalidad">{{pedido.modalidad}}</option>
+                        <option *ngFor="let option of ['En el local', 'Retiro', 'Delivery']" [value]="option"
+                            [hidden]="option === pedido.modalidad">{{option}}</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <label for="cliente" class="text-white mb-2">Cliente:</label>
+                    <select class="form-select" aria-label="Default select example" [(ngModel)]="pedido.cliente" id="cliente" name="clienteS" required>
+                        <option *ngFor="let c of clientes" [ngValue]="c">{{c.usuario.apellido}}, {{c.usuario.nombre}} ({{c.usuario.user}} - {{c.direccion}})</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row ">
+                <div class="col-md-6 mb-4">
+                    <label for="pago" class="text-white mb-2">Forma de pago:</label>
+                    <select class="form-select" aria-label="Default select example" id="pago" name="pagoS"
+                        [(ngModel)]="pedido.formaDePago" required>
+                        <option [value]="pedido.formaDePago">{{pedido.formaDePago}}</option>
+                        <option *ngFor="let option of ['Efectivo', 'Tarjeta', 'Link de pago', 'Transferencia']"
+                            [value]="option" [hidden]="option === pedido.formaDePago">{{option}}</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <label for="total" class="text-white mb-2">Total:</label>
+                    <input type="number" class="form-control" [(ngModel)]="pedido.total" id="total" name="totalS" required>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-secondary mt-4 me-1" (click)="volver()">Volver</button>
+            <button type="button" class="btn btn-success mt-4 ms-1" (click)="modificarPedido()"
+                [disabled]="pedido.total == null || pedido.demora == null || pedido.cliente == null">Modificar</button>
+        </form>
+    </div>
+</div>

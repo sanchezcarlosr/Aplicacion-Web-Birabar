@@ -1,0 +1,38 @@
+.black-background{
+    background-color: #202634;
+}
+
+.black-dark-background{
+    background-color: #141a24
+}
+
+.green-background{
+    background-color: #1fd08f;
+  }
+
+.green-text{
+    color:  #1fd08f;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.qr-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+p {
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Ajusta el espacio horizontal entre los botones según tus necesidades */
+}

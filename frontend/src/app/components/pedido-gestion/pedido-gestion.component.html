@@ -1,0 +1,101 @@
+<div class="black-dark-background pb-4">
+    <div class="container text-center">
+        <legend class="mb-4 mt-4 text-white">Gestión de pedidos</legend>
+
+        <div class="row">
+          <div class="mb-2 col-md-4">
+            <label for="filtroCliente" class="text-white mb-2">Cliente:</label>
+            <select class="form-select " aria-label="Default select example" id="filtroCliente" [(ngModel)]="idclienteSeleccionado" name="clienteS" required>
+                <option *ngFor="let c of clientes" [ngValue]="c._id">{{c.usuario.apellido}}, {{c.usuario.nombre}} ({{c.usuario.user}} - {{c.direccion}})</option>
+            </select>
+          </div>
+          <div class="mb-2 col-md-4">
+            <label for="filtroPago" class="text-white mb-2">Forma de pago:</label>
+            <select class="form-select " aria-label="Default select example" id="filtroPago" [(ngModel)]="formadepagoSeleccionada" name="formadepagoS" required>
+                <option value="Transferencia">Transferencia</option>
+                <option value="Link de pago">Link de pago</option>
+                <option value="Tarjeta">Tarjeta</option>
+                <option value="Efectivo">Efectivo</option>
+            </select>
+          </div>
+          <div class="mb-2 col-md-4">
+            <label for="filtroEstado" class="text-white mb-2">Estado de pedido:</label>
+            <select class="form-select " aria-label="Default select example" id="filtroEstado" [(ngModel)]="estadoSeleccionado" name="estadoS" required>
+                <option value="Pendiente">Pendiente</option>
+                <option value="En curso">En curso</option>
+                <option value="Finalizado">Finalizado</option>
+                <option value="Cancelado">Cancelado</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <button type="button" class="btn btn-success mt-3 mb-4 me-1" (click)="filtrarPedidos(estadoSeleccionado, idclienteSeleccionado, formadepagoSeleccionada)" [disabled]="estadoSeleccionado == '' && formadepagoSeleccionada == '' && idclienteSeleccionado == ''">Filtrar</button>
+          <button type="button" class="btn btn-secondary mt-3 mb-4 ms-1" *ngIf="estadoSeleccionado != '' || formadepagoSeleccionada != '' || idclienteSeleccionado != ''" onclick="location.reload()">Reestablecer</button>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">IDPedido</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Dirección Cliente</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Tipo de servicio</th>
+                    <th scope="col">Forma de pago</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Detalle</th>
+                    <th scope="col" colspan="4">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody *ngFor="let p of pedidos">
+                  <tr>
+                    <th>{{p._id}}</th>
+                    <td>{{p.cliente.usuario.nombre}} {{p.cliente.usuario.apellido}}</td>
+                    <td>{{p.cliente.direccion}}</td>
+                    <td>{{p.estado}}</td>
+                    <td>{{p.modalidad}}</td>
+                    <td>{{p.formaDePago}}</td>
+                    <td>{{p.total | currency: '$'}}</td>
+                    <td>
+                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#detalleModal" (click)="setPedido(p)">
+                            Ver
+                        </button>
+
+                        <div class="modal fade" id="detalleModal" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h1 class="modal-title fs-5" id="detalleModalLabel">Detalle del pedido</h1>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-start">
+                                    <p class="card-text" *ngFor="let d of pedido.detalleProductos">
+                                        <img src="{{d.producto.imagen}}" alt="" width="10%"> {{d.cantidad}} x {{d.producto.nombreProducto}} - Precio U.: {{d.producto.precio | currency: '$'}} - Subtotal: {{d.subtotal | currency: '$'}}
+                                    </p>
+                                    <p *ngIf="pedido.calificacion != null">
+                                        <i class="bi bi-calendar-check"></i> Fecha: {{pedido.calificacion.fecha}}
+                                        <br><i class="bi bi-star-fill"></i> Puntaje: {{pedido.calificacion.puntaje}}/5
+                                        <br><i class="fa-solid fa-comment"></i> Observacion: {{pedido.calificacion.observacion}} <i *ngIf="pedido.calificacion.observacion == null"> Sin observación. </i>
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><button type="button" class="btn btn-success" [disabled]="p.formaDePago == 'Efectivo' || p.estado == 'Finalizado'" (click)="setPedido(p); enviarMensaje()"><i class="bi bi-whatsapp"></i></button></td>
+                    <td>
+                      <button type="button" class="btn btn-success" (click)="finalizarPedido(p._id)" *ngIf="p.estado != 'Pendiente'" [disabled]="p.estado != 'En curso'">Finalizado</button>
+                      <button type="button" class="btn btn-info" (click)="aceptarPedido(p._id)" *ngIf="p.estado == 'Pendiente'">Aceptar</button>
+                    </td>
+                    <td><button type="button" class="btn btn-danger" (click)="cancelarPedido(p._id)" [disabled]="p.estado == 'Cancelado' || p.estado == 'Finalizado'">Cancelar</button></td>
+                    <td><button type="button" class="btn btn-dark" (click)="modificarPedido(p._id)"><i class="bi bi-plus-lg"></i></button></td> 
+                  </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

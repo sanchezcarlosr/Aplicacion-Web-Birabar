@@ -1,0 +1,22 @@
+.section {
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.section h2 {
+  margin-top: 10px;
+}
+
+.icon {
+  background-color: #1fd08f;
+  border-radius: 50%;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+}

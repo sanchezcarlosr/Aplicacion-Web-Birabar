@@ -1,0 +1,91 @@
+<div class="black-background text-white">
+  <div class="container pt-3 pb-5 ">
+    <nav class="navbar navbar-expand">
+      <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav mx-auto">
+            <a class="nav-link active bi bi-check" onclick="selectTab(this)" (click)="verOfertasDisponibles=true">
+              Ofertas <u class="text-green">{{dia}}</u></a>
+            <a class="nav-link bi bi-check-all" onclick="selectTab(this)" (click)="verOfertasDisponibles=false"> Ver
+              todas las ofertas</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="row justify-content-center" *ngIf="ofertas.length!=0 && !verOfertasDisponibles">
+      <p class="text-center form-text text-white mb-3">Explore el catálogo de ofertas.</p>
+      <div class="col-xl-3 col-md-4 col-12 d-flex justify-content-center align-items-center "
+        *ngFor="let oferta of ofertas">
+        <div class="oferta text-center" (click)="cargarProductos(oferta)" data-bs-toggle="modal"
+          data-bs-target="#modalOferta">
+          <p class="display-1 mb-1" style="font-size: 18px;">{{oferta.titulo}}</p>
+          <div style="height: 200px;width:200px;">
+            <img [src]="oferta.imagen" class="object-fit-cover rounded-1 h-100 w-100" style="height: 100%;width: 100%;">
+          </div>
+          <small>{{oferta.precio | currency:'$'}}</small>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="ofertas.length==0 && !verOfertasDisponibles" class="text-center mt-3">
+      <img src="assets/images/pedidos/lupulo.png" alt="" class="img-fluid img-opacity" width="150px">
+      <p><i>No existen ofertas disponibles.</i></p>
+    </div>
+    <div class="row justify-content-center" *ngIf="verOfertasDisponibles && ofertasDisponibles.length!=0">
+      <p class="text-center form-text text-white mb-3">Las ofertas con <i
+          class="text-green bi bi-check-circle-fill"></i> están disponibles en este momento.</p>
+      <div class="col-xl-3 col-md-4 col-12 d-flex justify-content-center align-items-center "
+        *ngFor="let oferta of ofertasDisponibles">
+        <div class="oferta text-center" (click)="cargarProductos(oferta)" data-bs-toggle="modal"
+          data-bs-target="#modalOferta">
+          <p class="display-1 mb-1" style="font-size: 18px;">{{oferta.titulo}} <i *ngIf="disponibleAhoraMismo(oferta)"
+              class="text-green bi bi-check-circle-fill"></i></p>
+          <small class="form-text text-white">{{oferta.desde}}hs - {{oferta.hasta}}hs</small>
+          <div style="height: 200px;width:200px;">
+            <img [src]="oferta.imagen" class="object-fit-cover rounded-1 h-100 w-100" style="height: 100%;width: 100%;">
+          </div>
+          <small>{{oferta.precio | currency:'$'}}</small>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="ofertasDisponibles.length==0 && verOfertasDisponibles" class="text-center mt-3">
+      <img src="assets/images/pedidos/lupulo.png" alt="" class="img-fluid img-opacity" width="150px">
+      <p><i>No hay ofertas disponibles en este momento.</i></p>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalOferta" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content black-background text-white">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><b>{{ofertaModal.titulo}}</b></h1>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><b>Precio: </b> {{ofertaModal.precio | currency:'$':'symbol':'1.0-2'}}</p>
+        <p><b>Dias disponibles: </b> {{ofertaModal.dias}}</p>
+        <p><b>Desde las: </b>{{ofertaModal.desde}}</p>
+        <p><b>Hasta las: </b>{{ofertaModal.hasta}}</p>
+        <p><b>Descripción: </b>{{ofertaModal.descripcion}}</p>
+        <table class="text-center" style="width: 100%;">
+          <thead>
+            <tr class="border">
+              <th scope="col" colspan="2">Producto</th>
+              <th class="border" scope="col">Precio unidad</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let d of productosModal">
+            <tr class="border">
+              <th scope="row"><img src="{{d.imagen}}" height="50px" width="50px" class="object-fit-cover"></th>
+              <td>{{d.nombreProducto}}</td>
+              <td class="border">{{d.precio | currency: '$'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

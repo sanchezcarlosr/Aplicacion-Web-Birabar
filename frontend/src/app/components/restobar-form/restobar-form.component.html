@@ -1,0 +1,130 @@
+<div class="black-background">
+    <div class="container pt-4 pb-5 text-light">
+        <h4 class="text-center mb-3">Gestión de Restobar</h4>
+        <div class="row mb-3 justify-content-center">
+            <div class="col-7 border rounded-3 border-secondary p-4">
+                <form #restobarForm="ngForm">
+                    <h4 class="text-center mb-2">Datos del local</h4>
+                    <div class="row mb-3 justify-content-center">
+                        <div class="col-md-8">
+                            <label class="form-text text-secondary" for="restobarname">Nombre del Restobar:</label>
+                            <input type="text" class="form-control form-control-md" id="restobarname" name="restobarname"
+                                placeholder="Ingrese nombre del Restobar" autocomplete="off" required
+                                #restobarname="ngModel" [(ngModel)]="restobar.nombreLocal">
+                            <div *ngIf="restobarname.invalid && (restobarname.dirty || restobarname.touched)" class="text-danger">
+                                <div *ngIf="restobarname.errors?.['required']">
+                                    Debe ingresar el nombre del restobar antes de continuar.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-text text-secondary" for="restobardirr">Dirección del Restobar:</label>
+                            <input type="text" class="form-control form-control-md" id="restobardirr" name="restobardirr"
+                                placeholder="Ingrese dirección del Restobar" autocomplete="off"  required
+                                #restobardirr="ngModel" [(ngModel)]="restobar.direccionLocal">
+                            <div *ngIf="restobardirr.invalid && (restobardirr.dirty || restobardirr.touched)" class="text-danger">
+                                <div *ngIf="restobardirr.errors?.['required']">
+                                    Debe ingresar la dirección del restobar antes de continuar.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-text text-secondary" for="restobarmail">Email del Restobar:</label>
+                            <input type="text" class="form-control form-control-md" id="restobarmail" name="restobarmail"
+                                placeholder="Ingrese el Email del Restobar" autocomplete="off"  required
+                                #restobarmail="ngModel" [(ngModel)]="restobar.emailLocal">
+                            <div *ngIf="restobarmail.invalid && (restobarmail.dirty || restobarmail.touched)" class="text-danger">
+                                <div *ngIf="restobarmail.errors?.['required']">
+                                    Debe ingresar el Email del restobar antes de continuar.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-text text-secondary" for="restobartel">Teléfono del Restobar:</label>
+                            <input type="text" class="form-control form-control-md" id="restobartel" name="restobartel"
+                                placeholder="Ingrese el teléfono del Restobar" autocomplete="off"  required
+                                #restobartel="ngModel" [(ngModel)]="restobar.telefonoLocal">
+                            <div *ngIf="restobartel.invalid && (restobartel.dirty || restobartel.touched)" class="text-danger">
+                                <div *ngIf="restobartel.errors?.['required']">
+                                    Debe ingresar el teléfono del restobar antes de continuar.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-text text-secondary" for="deliveryState">Servicio Delivery:</label>
+                            <select class="form-control" id="deliveryState" name="deliveryState" required
+                                    #deliveryState="ngModel" [(ngModel)]="restobar.delivery">
+                                    <option value="true">Disponible</option>
+                                    <option value="false">No disponible</option>
+                            </select>
+                            <div *ngIf="deliveryState.invalid && (deliveryState.dirty || deliveryState.touched)" class="text-danger">
+                              <div *ngIf="deliveryState.errors?.['required']">
+                                Debe seleccionar un estado del servicio de delivery.
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-text text-secondary" for="localState">Local Abierto:</label>
+                            <select class="form-control" id="localState" name="localState" required
+                                    #localState="ngModel" [(ngModel)]="restobar.abierto">
+                                    <option value="true">Abierto</option>
+                                    <option value="false">Cerrado</option>
+                            </select>
+                            <div *ngIf="localState.invalid && (localState.dirty || localState.touched)" class="text-danger">
+                              <div *ngIf="localState.errors?.['required']">
+                                Debe seleccionar un estado del local.
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección: Links de pago -->
+                    <div class="row mb-3 justify-content-center">
+                        <h4 class="text-center mb-2">Links de pago</h4>
+                        <div class="col-md-8">
+                            <label class="form-text text-secondary" for="carLink">Link Tarjeta:</label>
+                            <input type="text" class="form-control form-control-md" id="carLink" name="carLink"
+                                placeholder="Ingrese link de tarjeta" autocomplete="off"  required
+                                #carLink="ngModel" [(ngModel)]="restobar.linkTarjeta">
+                            <div *ngIf="carLink.invalid && (carLink.dirty || carLink.touched)" class="text-danger">
+                                <div *ngIf="carLink.errors?.['required']">
+                                    Debe ingresar el link de pago por tarjeta antes de continuar.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-text text-secondary" for="payLink">Link de pago: </label>
+                            <input type="text" class="form-control form-control-md" id="payLink" name="payLink"
+                                placeholder="Ingrese un link de pago" autocomplete="off"  required
+                                #payLink="ngModel" [(ngModel)]="restobar.linkPago">
+                            <div *ngIf="payLink.invalid && (payLink.dirty || payLink.touched)" class="text-danger">
+                                <div *ngIf="payLink.errors?.['required']">
+                                    Debe ingresar el link de pago antes de continuar.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-text text-secondary" for="transferLink">Link de transferencia:</label>
+                            <input type="text" class="form-control form-control-md" id="transferLink" name="transferLink"
+                                placeholder="Ingrese un link de transferencia" autocomplete="off"  required
+                                #transferLink="ngModel" [(ngModel)]="restobar.linkTransferencia">
+                            <div *ngIf="transferLink.invalid && (transferLink.dirty || transferLink.touched)" class="text-danger">
+                                <div *ngIf="transferLink.errors?.['required']">
+                                    Debe ingresar el link de transferencia antes de continuar.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 justify-content-center align-content-center text-center">
+                        <button *ngIf="accion=='new'" type="submit" class="btn btn-light bi bi-plus-circle me-1"
+                            [disabled]="!restobarForm.valid" (click)="crearRestobar()">Crear</button>
+                        <button *ngIf="accion=='update'" type="submit" class="btn btn-light bi bi-pencil-square me-1"
+                            [disabled]="!restobarForm.valid" (click)="editarRestobar()">Modificar</button>
+                        <a [href]="['gestion-restobar']" class="btn btn-light bi bi-arrow-left"> Volver</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,52 @@
+.black-background {
+    background-color: #202634;
+}
+
+.green-background {
+    background-color: #1fd08f;
+}
+
+.green-background:hover {
+    background-color: #2cf5ab;
+    color: #202634;
+}
+
+.combo{
+    width: 200px;
+    margin: 10px;
+    transition: all 400ms ease;
+}
+
+.combo:hover{
+    cursor:pointer;
+    transform: translateY(-3%);
+}
+
+.modal-header,
+.modal-body,
+.modal-footer {
+  border-color: #141a24;
+}
+
+.img-opacity {
+    opacity: 0.3;
+}
+
+.black-dark-background {
+    background-color: #141a24
+}
+
+.modal-header,
+.modal-body,
+.modal-footer {
+    border-color: #141a24;
+}
+
+.btn-modal {
+    background-color: #464c57;
+    color: white;
+}
+
+.btn-modal:hover{
+    background-color: rgb(46, 44, 44);
+}

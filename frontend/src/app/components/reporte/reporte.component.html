@@ -1,0 +1,338 @@
+<div class="black-background text-light py-4">
+<div class="container ">
+  <h1 class="mb-3">Reportes</h1>
+  <div class="row">
+    <div class="col-xl-6">
+      <div class="card mb-4 card-grafico">
+          <div class="card-header">
+              <i class="fas fa-chart-bar me-1"></i>
+              Ventas
+          </div>
+          <div class="card-body " *ngIf="mostrarLine">
+            <canvas baseChart  width="100%"
+            [type]="'line'"
+            [data]="lineChartData"
+            [options]="lineChartOptions"
+            [legend]="lineChartLegend">
+          </canvas>
+        </div>
+      </div>
+  </div>
+
+  
+  
+      <div class="col-xl-6">
+          <div class="card mb-4 reporte-carta card-grafico">
+
+            <div *ngIf="this.resumen.length==0" class="aviso">
+              <h4 class="text-center">No se encontraron Calificaciones</h4>
+           </div>
+
+            <div class="detalles " data-bs-toggle="modal"
+            data-bs-target="#modalFecha">
+              <nav class="navbar">
+                <div class="navbar-dots">
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                </div>
+              </nav>
+            </div>
+
+              <div class="card-header">
+                  <i class="fas fa-chart-area me-1"></i>
+                 Calificaciones 
+                 <label *ngIf="filtro">- Filtro Por Fecha</label>
+              </div>
+              <div class="card-body ">
+
+         <div class="row justify-content-center">
+                      <div class="col-12   "*ngIf="grafico=='barra'">
+                        <canvas  *ngIf="mostrar" baseChart [data]="barChartData" [options]="barChartOptions" [plugins]="barChartPlugins"
+                          [legend]="barChartLegend" [type]="'bar'"   width="100%" >
+                        </canvas>
+
+                       
+
+                      </div>
+            
+            
+                      <div class="col-6 torta  " *ngIf="grafico=='torta'">
+                        <canvas baseChart [type]="'pie'" [datasets]="pieChartDatasets" [labels]="pieChartLabels"
+                          [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend"  *ngIf="mostrar"  width="100%">
+                        </canvas>
+                      </div>
+                                
+         </div>
+            
+                   
+            
+        
+
+
+
+
+
+
+              </div>
+          </div>
+      </div>
+
+  </div>
+ 
+  <div class="row py-4">
+     
+      <div class="col-xl-12 py-4">
+        <div class="card mb-4  reporte-carta card-grafico">
+          
+          <div *ngIf="this.dataProductos.length==0" class="aviso">
+            <h4 class="text-center">No se encontraron Productos</h4>
+         </div>
+
+
+          <div class="detalles"  data-bs-toggle="modal"
+          data-bs-target="#modalProducto">
+            <nav class="navbar">
+              <div class="navbar-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+            </nav>
+          </div>
+            <div class="card-header">
+                <i class="fas fa-chart-bar me-1"></i>
+                Productos Mas vendidos - {{ labelMesProducto | mes}}
+            </div>
+            <div class="card-body">
+
+            <canvas baseChart
+        [data]="barChartData2"
+        [options]="barChartOptions2"
+        [plugins]="barChartPlugins2"
+        [legend]="barChartLegend2"
+        [type]="'bar'">
+</canvas>
+            
+            </div>
+        </div>
+    </div>
+  </div>
+
+  
+  <div class="card card-grafico">
+    
+
+      <div class="col-xl-12">
+        <div class="card  reporte-carta card-grafico" >
+
+          <div *ngIf="this.dataCliente.length==0" class="aviso">
+            <h4 class="text-center">No se encontraron Clientes</h4>
+         </div>
+          <div class="detalles" data-bs-toggle="modal"
+          data-bs-target="#modalCliente">
+            <nav class="navbar">
+              <div class="navbar-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+            </nav>
+          </div>
+
+            <div class="card-header">
+                <i class="fas fa-chart-bar me-1"></i>
+                Clientes con mas Compras - {{ labelMesCliente | mes}}
+            </div>
+            <div class="card-body">
+              <canvas baseChart *ngIf="mostrarCliente"
+              [data]="barChartData3"
+              [options]="barChartOptions3"
+              [plugins]="barChartPlugins3"
+              [legend]="barChartLegend3"
+              [type]="'bar'">
+        </canvas>
+          </div>
+        </div>
+    </div>
+
+    <div class="card-header">
+      <i class="fas fa-table me-1"></i>
+   Detalles de los clientes
+  </div>
+
+  <div class="card-body p-0" *ngIf="tabla.length > 0">
+    <div class="table-responsive table-dark">
+      <table id="datatablesSimple" class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th>Username</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Direccion</th>
+            <th>Telefono</th>
+            <th>Compras</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cliente of tabla">
+            <td>{{ cliente.cliente.usuario }}</td>
+            <td>{{ cliente.cliente.nombre }}</td>
+            <td>{{ cliente.cliente.apellido }}</td>
+            <td>{{ cliente.cliente.email }}</td>
+            <td>{{ cliente.cliente.direccion }}</td>
+            <td>{{ cliente.cliente.telefono }}</td>
+            <td>{{ cliente.totalCompras }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+
+</div>
+
+
+
+
+
+<!--MODAL PARA CALIFICACIONES-->
+<div class="modal fade" id="modalFecha" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content black-background text-white">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><b>Opciones</b></h1>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-3">
+
+          <div class="col-4 py-1">
+            <label class="text-center" for="tipo">Tipo de grafico: </label>
+          </div>
+          <div class="col-4">
+            <select class="form-select " aria-label="" (change)="cambio($event)">
+              <option selected value="barra">Barra</option>
+              <option value="torta">Torta</option>
+            </select>
+        </div>
+        
+        </div>
+
+        <div class="row"> 
+          <div class="col-12">
+                <h5 class="text-center">Desde:</h5>
+              <div class=" d-flex mb-4" >  
+                <div class="col-auto pt-2">
+              </div>
+                <input type="date" id="fechaDesde" class="form-control" [(ngModel)]="fechaDesde" name="fechaDesdeS" required>
+            </div>
+            <h5 class="text-center">Hasta:</h5>
+            <div class="  d-flex">
+                <input type="date" id="fechaHasta" class="form-control" [(ngModel)]="fechaHasta" name="fechaHastaS" required>
+            </div>
+          </div>
+
+          <div class="row justify-content-center mt-4" *ngIf="filtro">
+            <div class="col-auto">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="limpiarFiltro()">Borrar Filtro</button>
+            </div>
+         
+          </div>
+        
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="filtrar()"   [disabled]="fechaDesde === '' || fechaHasta === ''" >Filtrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--MODAL PARA PRODUCTOS-->
+<div class="modal fade" id="modalProducto" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content black-background text-white">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><b>Opciones</b></h1>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        
+        <div class="row mb-3" *ngIf="mostrarLine">
+
+          <div class="col-2 py-1">
+            <label class="text-center" for="tipo">Mes: </label>
+          </div>
+          <div class="col-10">
+            <select class="form-select " aria-label="" [(ngModel)]="mesProducto" required>
+              <option *ngFor="let meses of datosVentas.labels; index as i" value="{{i+1}}">{{meses}}</option>
+            </select>
+        </div>
+        
+        </div>
+
+        <div class="row justify-content-center mt-4" *ngIf="filtroProductoVendidos">
+          <div class="col-auto">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="mesProducto=13; cargarDatosResumenProducto();filtroProductoVendidos=false" >Borrar Filtro</button>
+          </div>
+       
+        </div>
+      
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cargarDatosResumenProducto()"  >Filtrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--MODAL PARA ClIENTES-->
+<div class="modal fade" id="modalCliente" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content black-background text-white">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><b>Opciones</b></h1>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        
+        <div class="row mb-3" *ngIf="mostrarLine">
+
+          <div class="col-2 py-1">
+            <label class="text-center" for="tipo">Mes </label>
+          </div>
+          <div class="col-12">
+            <select class="form-select " aria-label="" [(ngModel)]="mesCliente" required>
+              <option *ngFor="let meses of datosVentas.labels; index as i" value="{{i+1}}">{{meses}}</option>
+            </select>
+        </div>
+        
+        </div>
+
+        <div class="row justify-content-center mt-4" *ngIf="filtroCliente">
+          <div class="col-auto">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="mesCliente=13; cargarDatosResumenCliente();filtroCliente=false" >Borrar Filtro</button>
+          </div>
+       
+        </div>
+      
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cargarDatosResumenCliente()"  >Filtrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+</div>

@@ -1,0 +1,45 @@
+<div class="black-dark-background">
+    <div class="container text-center">
+         <legend class="mt-4 mb-3  text-white">¿Que te pareció el pedido?</legend>
+
+         <form action="" class="pb-4 col-md-6 offset-md-3 text-center">
+          <p class="text-white">¡Califícanos!</p>
+            <div class="star-widget mb-4">
+                <input type="radio" name="rate" id="rate1" (click)="obtenerPuntaje(5)">
+                <label for="rate1" class="fas fa-star"></label>
+                <input type="radio" name="rate" id="rate2" (click)="obtenerPuntaje(4)">
+                <label for="rate2" class="fas fa-star"></label>
+                <input type="radio" name="rate" id="rate3" (click)="obtenerPuntaje(3)">
+                <label for="rate3" class="fas fa-star"></label>
+                <input type="radio" name="rate" id="rate4" (click)="obtenerPuntaje(2)">
+                <label for="rate4" class="fas fa-star"></label>
+                <input type="radio" name="rate" id="rate5" (click)="obtenerPuntaje(1)">
+                <label for="rate5" class="fas fa-star"></label>
+            </div>  
+
+            <div class="form-floating">
+                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" [(ngModel)]="observacion" name="obs"></textarea>
+                <label for="floatingTextarea2">¡Dejanos un comentario! (Opcional)</label>
+            </div>
+         </form>
+
+        <div class="card bg-dark bg-gradient text-white mb-4 text-start col-md-6 offset-md-3">
+            <div class="card-header"> <i class="bi bi-file-earmark-text"></i>
+              Detalles del Pedido
+            </div>
+            <div class="card-body">
+              <p class="card-text" *ngFor="let d of pedido.detalleProductos">
+                {{d.cantidad}} x {{d.producto.nombreProducto}} - Subtotal: {{d.subtotal | currency: '$'}}
+              </p>
+              <p>
+                <i class="bi bi-check-circle-fill text-success"></i> Total: {{pedido.total | currency: '$'}}
+                <br><i class="bi bi-check-circle-fill text-success"></i> Tipo de servicio: {{pedido.modalidad}} 
+                <br><i class="bi bi-check-circle-fill text-success"></i> Estado del pedido: {{pedido.estado}} 
+              </p>
+            </div>
+        </div>
+
+        <button class="btn btn-secondary mb-4 me-1" (click)="volver()"><i class="bi bi-backspace"></i> Volver</button>
+        <button class="btn btn-success mb-4 ms-1" [disabled]="puntaje == null" (click)="crearCalificacion()"><i class="bi bi-send"></i> Enviar calificación</button>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<div class="black-background text-light">
+    <div class="container pt-4 pb-5">
+        <h4 class="text-center mb-3">Gestión de Combos</h4>
+        <div class="input-group mb-4">
+            <a class="btn btn-black text-white bi bi-plus-circle" href="/combo-form/0"> Crear Combo</a>
+            <button class="btn btn-black text-white bi bi-search" type="button"> Buscar Combo</button>
+            <input type="text" class="form-control"
+                placeholder="Ingresar el nombre de un combo a buscar" [(ngModel)]="searchCombo" (ngModelChange)="buscarPorTitulo()">
+        </div>
+        <div class="text-center border rounded-3 m-auto p-5" style="width: 300px;" *ngIf="combos.length==0">
+            <h4 class="bi bi-exclamation-octagon"></h4>
+            <h6 class="mb-3">No existen combos.</h6>
+            <a class="btn btn-light bi bi-plus-circle" href="/combo-form/0"> Crear Combo</a>
+        </div>
+        <div class="text-center table-responsive" *ngIf="combos.length!=0">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Titulo</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Descuento</th>
+                        <th scope="col">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let combo of combos">
+                        <td><img [src]="combo.imagen" style="width: 30px;height:30px;"></td>
+                        <td>{{combo.titulo}}</td>
+                        <td>{{combo.montoFinal | currency:'$':'symbol':'1.0-2'}}</td>
+                        <td>{{combo.descuento * 100}}%</td>
+                        <td style="font-size: 18px;">
+                            <a class="btn btn-primary bi bi-pencil-square" href="/combo-form/{{combo._id}}"
+                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .75rem; margin-right: 3px;"></a>
+                            <a class="btn btn-danger bi bi-trash3" (click)="eliminarCombo(combo._id)"
+                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .75rem; margin-top: 0;"></a>
+                            <a class="btn btn-success bi bi-whatsapp" (click)="cargarCombo(combo)"
+                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .75rem; margin-left: 3px;" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="imagenModal" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content black-background">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-white fw-bold">Enviar Mensaje</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mx-auto text-center text-white">
+                    <div class="card-body">
+                        <h4 class="card-title">Informar el combo por WhatsApp</h4>
+                        <h5 class="card-text pt-4">{{comboEnviar.titulo}}</h5>
+                        <img class="img-fluid" [src]="comboEnviar.imagen">
+                        <p class="card-text p-3">Este mensaje solo sera enviado a los usuarios suscripto</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-success bg-gradient bi bi-send-fill rounded-5" (click)="enviarMensaje()" ></button>
+            </div>
+        </div>
+    </div>
+</div>

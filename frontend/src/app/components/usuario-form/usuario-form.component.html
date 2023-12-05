@@ -1,0 +1,77 @@
+<div class="black-background">
+    <div class="container pt-4 pb-5 text-light">
+        <h4 class="text-center mb-3">Gestión de Usuarios</h4>
+        <div class="row mb-3 justify-content-center">
+            <div class="col-7 border rounded-3 border-secondary p-4">
+                <form #usuarioForm="ngForm">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <label class="form-text text-secondary" for="username">Nombre de usuario:</label>
+                            <input type="text" class="form-control form-control-md" id="username" name="username"
+                                placeholder="Ingrese nombre de usuario" autocomplete="off"  required
+                                #username="ngModel" [(ngModel)]="usuario.user">
+                            <div *ngIf="username.invalid && (username.dirty || username.touched)" class="text-danger">
+                                <div *ngIf="username.errors?.['required']">
+                                    Debe ingresar el nombre de usuario antes de continuar.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-text text-secondary" for="password">Contraseña:</label>
+                            <input type="text" class="form-control form-control-md" id="password" name="password"
+                                placeholder="Ingrese una contraseña" autocomplete="off"  required
+                                #password="ngModel" [(ngModel)]="usuario.password">
+                            <div *ngIf="password.invalid && (password.dirty || password.touched)" class="text-danger">
+                                <div *ngIf="password.errors?.['required']">
+                                    Debe ingresar la contraseña del usuario antes de continuar.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-text text-secondary" for="lastname">Apellido:</label>
+                            <input type="text" class="form-control form-control-md" id="lastname" name="lastname"
+                                placeholder="Ingrese un apellido" autocomplete="off"  required
+                                #lastname="ngModel" [(ngModel)]="usuario.apellido">
+                            <div *ngIf="lastname.invalid && (lastname.dirty || lastname.touched)" class="text-danger">
+                                <div *ngIf="lastname.errors?.['required']">
+                                    Debe ingresar el apellido del usuario antes de continuar.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-text text-secondary" for="name">Nombre:</label>
+                            <input type="text" class="form-control form-control-md" id="name" name="name"
+                                placeholder="Ingrese un nombre" autocomplete="off"  required
+                                #name="ngModel" [(ngModel)]="usuario.nombre">
+                            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger">
+                                <div *ngIf="name.errors?.['required']">
+                                    Debe ingresar el nombre del usuario antes de continuar.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-text text-secondary" for="role">Rol:</label>
+                            <select class="form-control" id="role" name="role" required
+                                    #role="ngModel" [(ngModel)]="usuario.rol">
+                              <option *ngFor="let rol of roles" [ngValue]="rol">{{ rol.nombre }}</option>
+                            </select>
+                            <div *ngIf="role.invalid && (role.dirty || role.touched)" class="text-danger">
+                              <div *ngIf="role.errors?.['required']">
+                                Debe seleccionar un rol antes de continuar.
+                              </div>
+                            </div>
+                        </div>
+
+
+                        <div class="mt-3 justify-content-center align-content-center text-center">
+                            <button *ngIf="accion=='new'" type="submit" class="btn btn-light bi bi-plus-circle me-1"
+                                [disabled]="!usuarioForm.valid" (click)="registrarUsuario()">Crear</button>
+                            <button *ngIf="accion=='update'" type="submit"
+                                class="btn btn-light bi bi-pencil-square me-1"  [disabled]="!usuarioForm.valid" (click)="modificarUsuario()">Modificar</button>
+                            <a [href]="['usuarioGestion']" class="btn btn-light bi bi-arrow-left"> Volver</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

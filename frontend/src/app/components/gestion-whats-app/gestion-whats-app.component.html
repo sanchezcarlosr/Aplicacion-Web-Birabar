@@ -1,0 +1,27 @@
+<div class="black-background text-white pt-5">
+    <div class="container text-center">
+        <h1 class="mb-4">Iniciar sesión en WhatsApp Web</h1>
+        <h1 *ngIf="!generado"><i class="fa-brands fa-whatsapp fa-3x"></i></h1>
+        <div class="qr-container">
+            <qrcode [qrdata]="qr" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+        </div>
+        <p class="mt-2">Escanea el código QR con tu dispositivo móvil para iniciar sesión en WhatsApp Web.</p>
+        <p class="mt-4 text-warning" *ngIf="generandoQR">Espere un momento, generando código QR...</p>
+        <div class="button-container">
+            <button class="btn green-background mt-4 mb-4 text-white" *ngIf="!generado" (click)="generarQR()" [disabled]="generandoQR">Generar QR</button>
+            <button class="btn green-background mt-4 mb-4 text-white" *ngIf="generado" (click)="generarQR()" [disabled]="generandoQR">Actualizar QR</button>
+            <button class="btn green-background mt-4 mb-4 text-white" (click)="navegarGestionDatos()">Gestionar Links de pago</button>
+        </div>
+
+        <div *ngIf="rutaEnviarMensaje()">
+            <p>
+                Para enviar un mensaje al cliente con los datos de pago:
+                <br>1- Generá el QR.
+                <br>2- Escaneá con tu celular el QR generado.
+                <br>3- Esperá en la aplicación de tu celular hasta que aparezca "Sesión activa" (puede tardar unos segundos).
+                <br>4- Por último presioná en "Volver" y cliqueá el botón con el ícono de Whatsapp correspondiente al pedido.
+            </p>
+            <button type="button" class="btn btn-secondary mb-5" (click)="volver()">Volver</button>
+        </div>
+    </div>
+</div>

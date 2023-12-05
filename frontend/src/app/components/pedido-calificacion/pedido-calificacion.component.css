@@ -1,0 +1,39 @@
+.black-dark-background {
+    background-color: #141a24
+}
+
+.star-widget{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center; 
+    align-items: center;
+    padding: 10px;
+}
+
+.star-widget input {
+    display: none;
+}
+
+.star-widget label {
+    cursor: pointer;
+}
+
+.star-widget label::before {
+    font-size: 20px;
+    color: #444;
+    padding: 10px;
+    transition: 0.5s;
+}
+
+.star-widget label:hover~label::before,
+.star-widget label:hover::before {
+    color: rgb(223, 185, 17);
+}
+
+.star-widget input:checked ~ label::before {
+    color: rgb(223, 185, 17);
+}
+
+.star-widget input#rate1:checked ~ label::before {
+    text-shadow: 0 0 10px rgb(192, 161, 22);
+}

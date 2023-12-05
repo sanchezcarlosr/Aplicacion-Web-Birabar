@@ -1,0 +1,248 @@
+<div class="black-background">
+    <div class="container pt-4 pb-5 text-light">
+        <h4 class="text-center mb-3">Gestión de Combos</h4>
+        <!-- Formulario -->
+
+        <div class="row justify-content-center">
+            <form #comboForm="ngForm" class="col-8 border rounded-3 border-secondary p-4">
+
+                <div class="row justify-content-center">
+
+
+
+
+
+
+                    <!--NOMBRE DEL COMBO INPUT-->
+                    <div class="col-md-6">
+                        <label class="form-text text-secondary" for="tituloCombo">Nombre del combo:</label>
+                        <input type="text" class="form-control" id="tituloCombo" name="tituloCombo"
+                            placeholder="Ingrese Nombre del Combo" autocomplete="off" [(ngModel)]="combo.titulo"
+                            required #titulo="ngModel">
+                        <div *ngIf="titulo.invalid && (titulo.dirty || titulo.touched)" class="text-danger">
+                            <div *ngIf="titulo.errors?.['required']">
+                                El nombre es requerido.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Imagen DEL COMBO INPUT-->
+                    <div class="col-md-6 mb-4">
+                        <label class="form-text text-secondary">
+                            <span class="bi bi-eye-fill me-2 link-green" *ngIf="combo.imagen" data-bs-toggle="modal"
+                                data-bs-target="#imagenModal"></span>
+                            Subir imagen del combo:
+                        </label>
+                        <input type="file" class="form-control" name="imagen" ngModel [required]="accion==='new'" #imagen="ngModel"
+                            (change)="onFileSeleccionado($event)">
+                        <div *ngIf="imagen.invalid && imagen.touched" class="text-danger">
+                            <div *ngIf="imagen.errors?.['required']">
+                                Debe seleccionar una imagen.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!--BOTON PARA PRODUCTOS-->
+                    <div class="mt-2 text-center">
+                        <button type="button" class="btn btn-light bi bi-cart" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                            Seleccionar Productos
+                        </button>
+                        <p *ngIf="combo.productos.length==0" class="form-text text-secondary">No hay productos
+                            seleccionados.</p>
+                        <p *ngIf="combo.productos.length>0" class="form-text text-secondary">Productos
+                            Seleccionados</p>
+                    </div>
+
+
+
+
+
+                    <!--TIPO DE DESCUENTO-->
+                    <div class="mb-3  text col-12" *ngIf="combo.productos.length>0">
+
+                        <div class="row justify-content-start">
+
+                            <span class="text-secondary">Elegir metodo de descuento</span>
+                            <hr>
+
+
+                            <div class="col-12 gap-2 mb-3">
+                                <div class="row">
+
+                                    <div class="col-6 d-flex flex-column gap-2">
+                                        <label >
+                                            <input type="radio" name="opcion" [(ngModel)]="descuentoSeleccionado" (click)="combo.montoFinal=0 "
+                                                value="porcentaje"> Aplicar Porcentaje
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="opcion" [(ngModel)]="descuentoSeleccionado" value="final" (click)="combo.descuento=0">
+                                            Colocar Precio Final
+                                        </label>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="precioLista">
+                                        <span>Precio Lista: {{precioLista |currency:'$':'symbol':'1.0-2' }}</span> 
+                                        </div>
+
+                                        <div class="precioLista" *ngIf="combo.montoFinal!=undefined && combo.montoFinal!=0">
+                                            <span>Precio Final: {{combo.montoFinal |currency:'$':'symbol':'1.0-2' }}</span> 
+                                            </div>
+                                       </div>
+
+                                </div>
+                               
+
+
+                               
+                                         
+
+                            </div>
+
+
+
+                            <div class="col-5" *ngIf="descuentoSeleccionado === 'porcentaje'">
+                                <label class="visually-hidden" for="specificSizeSelect">Descuento %: </label>
+                                <select class="form-select" id="specificSizeSelect" name="porcentajeDescuento"
+                                    [(ngModel)]="combo.descuento" (change)="calcularMontoFinal()">
+                                    <option value="0.1">10%</option>
+                                    <option value="0.2">20%</option>
+                                    <option value="0.3">30%</option>
+                                    <option value="0.4">40%</option>
+                                    <option value="0.5">50%</option>
+                                </select>
+                            </div>
+
+                            <div class="col-5"  *ngIf="descuentoSeleccionado === 'final'">
+                              <input type="number" class="form-control" name="titulo"
+                                    placeholder="Ingrese precio Final" [max]="precioLista-1"
+                                    [(ngModel)]="combo.montoFinal" #precio="ngModel"  (input)="calcularMontoFinal()" required>
+                                <div *ngIf="precio.invalid && precio.dirty" class="text-danger">
+                                    <div *ngIf="precio.errors?.['max']">
+                                        El monto final no puede ser mayor o igual al precio Lista
+                                    </div>
+                                    <div *ngIf="precio.errors?.['required']">
+                                        El monto Final es requerido.
+                                    </div>
+                                </div>
+                            
+
+                            </div>
+
+                            
+                        </div>
+                    </div>
+
+                    <div>
+                        <button *ngIf="accion=='new'" type="submit" class="btn btn-light bi bi-plus-circle me-1"
+                            [disabled]="!comboForm.valid || combo.productos.length==0 || combo.montoFinal == 0 || combo.montoFinal == undefined" (click)="registrarCombo()">Crear</button>
+                        <button *ngIf="accion=='update'" type="submit" class="btn btn-light bi bi-pencil-square me-1"
+                            [disabled]="!comboForm.valid || combo.productos.length==0 || combo.montoFinal == 0 || combo.montoFinal == undefined" (click)="modificarCombo()">Modificar</button>
+                        <a [href]="['comboGestion']" class="btn btn-light bi bi-arrow-left"> Volver</a>
+                    </div>
+
+                </div>
+            </form>
+
+
+        </div>
+
+        <!-- Fin del Formulario -->
+        <div class="modal fade" id="imagenModal" tabindex="-1" aria-labelledby="imagenModal" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content black-background">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Vista Previa</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div style="height: 200px;width: 200px;" class="mx-auto">
+                            <img [src]="combo.imagen" class="object-fit-cover h-100 w-100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Seleccionar Productos -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content black-background">
+                    <div class="modal-header">
+                        <nav class="navbar navbar-expand">
+                            <div class="container-fluid">
+                                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                                    <div class="navbar-nav mx-auto">
+                                        <a class="nav-link active bi bi-basket3" onclick="selectTab(this)"
+                                            data-tab="combo" (click)="buscarProducto = false"> Productos en el combo</a>
+                                        <a class="nav-link bi bi-search" onclick="selectTab(this)" data-tab="producto"
+                                            (click)="buscarProducto = true;"> Buscar Productos</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="modal-body">
+                        <div *ngIf="combo.productos.length==0 && buscarProducto == false;" class="text-center">
+                            <h6 class="text-start ms-3">No hay productos seleccionados.</h6>
+                        </div>
+                        <div *ngIf="buscarProducto">
+                            <div class="input-group mb-3">
+                                <button class="btn green-background bi bi-search" type="button"
+                                    (click)="buscarPorNombreProducto()">
+                                    Buscar</button>
+                                <input type="text" class="form-control" placeholder="EJ: Pizza"
+                                    [(ngModel)]="searchProducto" (ngModelChange)="buscarPorNombreProducto()">
+                            </div>
+                            <div *ngIf="productos.length==0" class="text-center">
+                                <h6 class="text-start ms-3">Debe crear productos. <a class="link-green"
+                                        href="/gestion-productos">Gestión Productos</a></h6>
+                            </div>
+                            <div *ngIf="productos.length!=0">
+                                <div class="card mb-3" *ngFor="let p of productos">
+                                    <div class="row g-0">
+                                        <div class="col-md-4">
+                                            <img [src]="p.imagen" class="img-fluid rounded-start">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{p.nombreProducto}}</h5>
+                                                <p class="card-text">{{p.descripcion}}</p>
+                                                <p class="card-text text-body-secondary">{{p.precio | currency:'$'}}</p>
+                                                <button type="button" class="btn btn-dark bi bi-plus-circle"
+                                                    (click)="agregarProductoToCombo(p)"> Agregar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="buscarProducto == false && combo.productos.length!=0">
+                            <div class="card mb-3" *ngFor="let p of productosCombo">
+                                <div class="row g-0">
+                                    <div class="col-sm-4">
+                                        <img [src]="p.imagen" class="img-fluid rounded-start">
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{p.nombreProducto}}</h5>
+                                            <p class="card-text">{{p.descripcion}}</p>
+                                            <p class="card-text text-body-secondary">{{p.precio | currency:'$'}}</p>
+                                            <button class="btn btn-danger bi bi-dash-circle"
+                                                (click)="quitarProductoToCombo(p._id)"> Quitar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <span class="m-auto">Productos Seleccionados: <b>{{combo.productos.length}}</b></span>
+                        <button type="button" class="btn green-background" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

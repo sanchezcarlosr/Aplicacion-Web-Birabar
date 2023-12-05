@@ -1,0 +1,138 @@
+<!-- <div class="container-fluid black-background">
+    <div class="row">
+            <div class="col-md-3 pt-3 d-grid justify-content-center ">
+                <div class="text-center">
+                    <div class="text-start p-2">
+                        <button type="submit" class="btn btn-dark bg-gradient rounded-3 text-white fw-bold producto" (click)="salir()">Salir</button>
+                    </div>
+                    <div class="card  black-background text-white">
+                        <h3 class="text-white fw-bold">Categoria</h3>
+                    <img [src]="categoria.imagen" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{categoria.nombreCategoria}}</h5>
+                        <div class="row g-1">
+                            <p>Operacion que puede realizar a la categoria</p>
+                            <div class="col-xl-6 col-md-12 col-sm-12 col-12">
+                                <button type="submit" class="btn btn-success bg-gradient rounded-3 text-white fw-bold producto" (click)="editarCategoria(categoria._id)">Editar</button>
+                            </div>
+                            <div class="col-xl-6 col-md-12 col-sm-12 col-12">
+                                <button type="submit" class="btn btn-danger bg-gradient rounded-3 text-white fw-bold producto" (click)="eliminarCategoria(categoria._id)">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 d-grid justify-content-center">
+                <div class="row p-5 container">
+                    <div class="row g-0 pt-5">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="col-md-12 col-sm-12 col-12">
+                                    <button type="submit" class="btn btn-dark bg-gradient rounded-3 text-white fw-bold producto" (click)="registrarProducto()">Registrar Producto</button>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <h4 class="text-center fw-bold text-white fw-bold">Lista de Productos</h4>
+                            </div>
+                        </div>
+                    </div>
+                    
+                        <div class="card col-xl-4 col-md-6 col-sm-12 col-12 text-center g-3 black-background bg-gradient text-white" *ngFor="let producto of listaProductos">
+                            <img [src]="producto.imagen" class="card-img-top" alt="...">
+                            <div class="card-body">
+                            <h5 class="card-title">{{producto.nombreProducto}}</h5>
+                            <p class="card-text">{{producto.descripcion}}</p>
+                            </div>
+                            
+                            <p class="">{{producto.precio | currency:'':'symbol':'0.0-4'}}</p>
+                            
+                            <div class="card-body">
+                                <div class="row g-1">
+                                    <div class="col-md-12 col-sm-12 col-12">
+                                        <button type="submit" class="btn btn-success bg-gradient rounded-3 text-white fw-bold producto" (click)="editarProducto(producto._id)">Editar</button>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-12">
+                                        <button type="submit" class="btn btn-danger bg-gradient rounded-3 text-white fw-bold producto" (click)="eliminarProducto(producto._id)">Eliminar</button>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                </div>
+            </div>
+    </div>
+</div> -->
+<div class="black-background text-light">
+    <div class="container pt-4 pb-5">
+        <h4 class="text-center mb-0">Gestión de Productos</h4>
+        <h4 class="text-center mb-3">Categoria - {{categoria.nombreCategoria}}</h4>
+        <div class="input-group mb-4">
+            <a class="btn btn-black bi bi-arrow-left" href="/gestion-productos"> Salir</a>
+            <a class="btn btn-black bi bi-plus-circle" href="/alta-producto/0"> Crear producto</a>
+            <button class="btn btn-black bi bi-search" type="button"> Buscar producto</button>
+            <input type="text" class="form-control" placeholder="Ingresar el nombre de un producto. Ejemplo: Hamburguesa" [(ngModel)]="searchProducto" (ngModelChange)="buscarPorProducto()">
+        </div>
+
+
+        <div class="text-center border rounded-3 m-auto p-5" style="width: 300px;" *ngIf="listaProductos.length==0">
+            <h4 class="bi bi-exclamation-octagon"></h4>
+            <h6 class="mb-3">No existen Categorias.</h6>
+            <a class="btn btn-success bg-gradient bi bi-plus-circle" href="/alta-producto/0"> Crear producto</a>
+        </div>
+        <div class="text-center table-responsive" *ngIf="listaProductos.length!=0">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Nombre del producto</th>
+                        <th scope="col">Ver m&aacute;s</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let p of listaProductos">
+                        <td><img [src]="p.imagen" style="width: 30px;height:30px;"></td>
+                        <td>{{p.nombreProducto}}</td>
+                        <td>
+                            <a class="btn btn-success bi bi-eye producto" data-bs-toggle="modal" data-bs-target="#imagenModal"
+                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .75rem; margin-top: 0;" (click)="verProducto(p)"></a>
+                        </td>
+                        <td>{{p.precio | currency:'':'symbol':'0.0-4'}}</td>
+
+                        <td style="font-size: 18px;">
+                            <a class="btn btn-primary bi bi-pencil-square producto" (click)="editarProducto(p._id)"
+                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .75rem; margin-right: 3px;"></a>
+                            <a class="btn btn-danger bi bi-trash3 producto" (click)="eliminarProducto(p._id)"
+                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .75rem; margin-top: 0;"></a>
+                        </td>
+
+                    </tr>   
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+ <!-- Fin del Formulario -->
+ <div class="modal fade" id="imagenModal" tabindex="-1" aria-labelledby="imagenModal" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content black-background">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-white fw-bold">Mas informaci&oacute;n</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mx-auto text-center text-white">
+                    <img [src]="producto.imagen" class="card-img-top" alt="...">
+                            <div class="card-body">
+                            <h5 class="card-title">{{producto.nombreProducto}}</h5>
+                            <p class="card-text p-3">{{producto.descripcion}}</p>
+                            </div>
+                            
+                            <p class="p-3">{{producto.precio | currency:'':'symbol':'0.0-4'}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

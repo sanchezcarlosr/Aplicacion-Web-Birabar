@@ -1,0 +1,13 @@
+<div class="black-background p-2">
+    <div class="container">
+        <h4 class="text-center text-white fw-bold">Carta Digital</h4>
+    </div>
+    <div class="row row-cols-1 row-cols-md-4 justify-content-center p-4 text-center gy-5">
+        <div class="col" *ngFor="let categoria of listaCategorias" (click)="productosPorCategoria(categoria._id)">
+            <div class="card">
+                <img src="{{categoria.imagen}}">
+                <h5 class="card-title content text-white">{{categoria.nombreCategoria}}</h5>
+            </div>
+        </div>
+    </div>
+</div>

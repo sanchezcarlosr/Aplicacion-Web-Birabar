@@ -1,0 +1,87 @@
+.black-background{
+  background-color: #202634;
+}
+
+.black-dark-background{
+  background-color: #141a24
+}
+
+.blurry-background {
+  background-image: url('../../../assets/images/homepage/hamburgers-and-beers.jpg');
+  background-size: cover;
+  background-position: center;
+  background-size: cover;
+  background-position: center;
+  filter: blur(2.5px);
+  -webkit-filter: blur(2.5px);
+}
+
+.welcome-section {
+  position: relative;
+  z-index: 1;
+}
+
+.welcome-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 90%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.welcome-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+  padding: 80px 0;
+}
+
+.welcome-title {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.welcome-description {
+    font-size: 20px;
+    margin-bottom: 40px;
+}
+
+.icon-box {
+    text-align: center;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .icon-box:hover {
+    transform: translateY(-10px);
+  }
+  
+  .icon-link {
+    display: block;
+    color: #ffffff;
+    text-decoration: none;
+  }
+  
+  .icon-link:hover {
+    color: #ffffff;
+  }
+  
+  .icon-title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .custom-icon{
+    width: 70px;
+    height: 65px;
+  }
+
+.pointer{
+  cursor: pointer;
+}
+  

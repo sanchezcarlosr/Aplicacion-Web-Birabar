@@ -1,0 +1,23 @@
+.black-background{
+    background-color: #202634;
+    background-color: #141a24;
+}
+
+/*Las tarjetas y su contenido*/
+.producto{
+    border-radius: 3px;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    cursor: default;
+    transition: all 400ms ease;
+}
+
+.producto:hover{
+    box-shadow: 0 0.1rem 0.4rem rgba(0, 0, 0, 5);
+    transform: translateY(-5%);
+}
+.producto.contenido{
+    text-align: center;
+    padding: 10px;
+}

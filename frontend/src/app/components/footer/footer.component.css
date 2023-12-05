@@ -1,0 +1,41 @@
+.black-background{
+    background-color: #202634;
+}
+
+.black-dark-background{
+    background-color: #141a24
+}
+
+.green-background{
+    background-color: #1fd08f;
+  }
+
+.green-text{
+    color:  #1fd08f;
+}
+
+.green-line{
+    width: 60px;
+    height: 2px;
+    background-color: #02fa9f;
+    color:  #02fa9f;
+}
+
+.subscribe-form {
+    display: flex;
+    align-items: flex-end;
+}
+
+.subscribe-input {
+    flex: 1;
+    border-right: none;
+    border-radius: 4px 0 0 4px;
+}
+
+.subscribe-button {
+    border-radius: 0 4px 4px 0;
+}
+
+.text-white{
+    text-decoration: none;
+}

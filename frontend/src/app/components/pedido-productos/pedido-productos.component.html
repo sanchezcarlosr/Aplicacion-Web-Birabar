@@ -1,0 +1,129 @@
+<div class="black-dark-background">
+    <div class="container p-4 text-center">
+        <legend class="text-white mb-4" *ngIf="idcombo == null">¿Qué vas a pedir hoy?</legend>
+        <legend class="text-white mb-4" *ngIf="idcombo != null">¿Querés agregar productos a tu pedido?</legend>
+        <div class="mb-4">
+            <a class="link-light link-underline-opacity-25 link-underline-opacity-100-hover" data-bs-toggle="modal"
+                data-bs-target="#exampleModal" *ngIf="productos.length != 0">
+                <i class="fa-solid fa-pizza-slice me-2" style="color: white;"></i>
+                Ver mi pedido.
+            </a>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content text-white black-dark-background">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="bi bi-basket"></i> Tu pedido
+                            </h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div *ngIf="detalleProductos.length == 0 && combo == null">
+                                <i style="font-size: medium;">No tenés productos seleccionados.</i>
+                            </div>
+
+                            <div *ngIf="detalleProductos.length != 0 || combo!=null" class="text-start pe-3 ps-3">
+                                    <table class="table-bordered text-center mb-4" *ngIf="combo!=null">
+                                        <thead>
+                                            <tr>
+                                            <th scope="col">Combo</th>
+                                            <th scope="col">Productos</th>
+                                            <th scope="col">Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                            <td style="width: auto;"><img src="{{combo.imagen}}" alt="" width="20%">{{combo.titulo}}</td> 
+                                            <td><div *ngFor="let d of detallesCombo">{{d.producto.nombreProducto}} x {{d.cantidad}}</div></td>
+                                            <td>{{combo.montoFinal | currency: '$'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table class="table-bordered text-center mb-4" *ngIf="detalleProductos.length != 0">
+                                        <thead>
+                                            <tr>
+                                              <th scope="col">Llevas</th>
+                                              <th scope="col">Precio</th>
+                                              <th scope="col">Cantidad</th>
+                                              <th scope="col">Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngFor="let d of detalleProductos">
+                                            <tr>
+                                              <td style="width: auto;"><img src="{{d.producto.imagen}}" alt="" width="20%"> {{d.producto.nombreProducto}}</td> 
+                                              <td>{{d.producto.precio | currency: '$'}}</td>
+                                              <td>{{d.cantidad}}</td>
+                                              <td>{{d.subtotal | currency: '$'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                <p>
+                                    <i class="bi bi-check-circle-fill text-success" style="font-size: medium;"></i> Total: {{calcularTotal() |
+                                    currency: '$'}}
+                                    <br><i class="bi bi-check-circle-fill text-success" style="font-size: medium;"></i> Tipo de Servicio: {{modalidad}}
+                                </p>
+                                    <div class="dark-container">
+                                        <label for="formaPago" class="text-white mb-2">Selecciona una forma de pago:</label>
+                                        <select class="form-select bg-dark" aria-label="Default select example" id="formaPago" [(ngModel)]="formaDePago" name="pago" required>
+                                            <option value="Efectivo" class="bg-dark">Efectivo</option>
+                                            <option value="Tarjeta" class="bg-dark">Tarjeta</option>
+                                            <option value="Link de pago" class="bg-dark">Link de pago</option>
+                                            <option value="Transferencia" class="bg-dark">Transferencia</option>
+                                        </select>
+                                    </div>
+                            
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Volver</button>
+                                <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                                    [disabled]="(detalleProductos.length == 0 && combo == null) || formaDePago == null"
+                                    (click)="guardarPedido()">Finalizar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4" *ngIf="productos.length != 0">
+                <div class="col-md-6" *ngFor="let p of productos">
+                    <div class="card mb-3 bg-dark bg-gradient text-white" style="max-width: 540px;">
+                        <div class="row g-0">
+                            <div class="col-sm-5">
+                                <div class="image-container">
+                                    <img src="{{p.imagen}}" alt="..." class="img-fluid">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-7">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{p.nombreProducto}}</h5>
+                                    <p class="card-text">{{p.descripcion}}</p>
+                                    <small class="text-success" *ngIf="productoEnOferta(p)">OFERTA</small>
+                                    <p class="card-text"><small class="card-text">{{p.precio | currency: '$'}} </small></p>
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="col-5 text-end">
+                                            <button type="button" class="btn btn-prods" (click)="quitarDelPedido(p)"><i
+                                                    class="bi bi-dash-circle"></i></button>
+                                        </div>
+                                        <div class="col-2 text-center">
+                                            {{calcularCantidad(p._id)}}
+                                        </div>
+                                        <div class="col-5 text-start">
+                                            <button type="button" class="btn btn-prods" (click)="agregarAlPedido(p, detalleProductos)"><i
+                                                    class="bi bi-plus-circle"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="productos.length == 0">
+                <img src="assets/images/pedidos/lupulo.png" alt="" class="img-fluid img-opacity"
+                    width="150px">
+                <p class="mt-4 text-white"><i style="font-size: medium;">Lo sentimos, no hay productos disponibles por
+                        el momento.</i></p>
+            </div>
+        </div>
+    </div>

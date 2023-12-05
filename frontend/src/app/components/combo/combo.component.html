@@ -1,0 +1,107 @@
+<div class="black-background text-white">
+  <div class="container pt-4 pb-5 ">
+    <legend class="text-center mb-3">Combos Disponibles</legend>
+    <div class="row justify-content-center" *ngIf="combos.length!=0">
+      <div class="col-xl-3 col-md-4 col-12 d-flex justify-content-center align-items-center"
+        *ngFor="let combo of combos">
+        <div class="combo text-center" (click)="cargarProductos(combo)" data-bs-toggle="modal"
+          data-bs-target="#modalCombo">
+          <h6 class="text-light mb-3">{{combo.titulo}}</h6>
+          <div style="height: 200px;width:200px;">
+            <img [src]="combo.imagen" class="object-fit-cover rounded-1 h-100 w-100" style="height: 100%;width: 100%;">
+          </div>
+          <p class="mt-2">
+            <s>{{combo.montoLista | currency:'$'}}</s>
+            <br>{{combo.montoFinal | currency:'$'}}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="combos.length==0" class="text-center mt-3">
+      <img src="assets/images/pedidos/lupulo.png" alt="" class="img-fluid img-opacity" width="150px">
+      <p><i>No hay combos disponibles.</i></p>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalCombo" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content black-background text-white">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><b>{{comboModal.titulo}}</b></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><b>Precio final: </b> {{comboModal.montoFinal | currency:'$':'symbol':'1.0-2'}}</p>
+        <table class="text-center" style="width: 100%;">
+          <thead>
+            <tr>
+              <th scope="col" colspan="2">Producto</th>
+              <th scope="col">Precio unidad</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let d of productosModal">
+            <tr>
+              <th scope="row"><img src="{{d.imagen}}" height="50px" width="50px" class="object-fit-cover"></th>
+              <td>{{d.nombreProducto}}</td>
+              <td>{{d.precio | currency: '$'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-success" *ngIf="!loginService.userLoggedIn() || loginService.rolLogged() != 'Cliente'" (click)="comprobarUsuario()" data-bs-dismiss="modal">Pedir</button>
+        <button type="button" class="btn btn-success" *ngIf="loginService.userLoggedIn() && loginService.rolLogged() == 'Cliente'" data-bs-toggle="modal" data-bs-target="#elegirModal">Pedir</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="elegirModal" tabindex="-1" aria-labelledby="elegirModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-white black-dark-background">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="elegirModalLabel">¿Qué te gustaria?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body ">
+        <div class="row pe-4 ps-4">
+          <button type="button" class="btn btn-modal m-1 text-start d-flex" (click)="setModalidad('En el local')"
+            data-bs-dismiss="modal">
+            <div class="col-2">
+              <img src="assets/images/pedidos/food-and-restaurant.png" alt="" width="60%" class="me-3 mx-auto d-block">
+            </div>
+            <div class="btn-wrapper ms-2">
+              <b class="btn-title ">Comer en el local</b>
+              <i class="btn-transition"><br>El pedido se sirve en el restaurante.</i>
+            </div>
+          </button>
+
+          <button type="button" class="btn btn-modal m-1 text-start d-flex" (click)="setModalidad('Retiro')"
+            data-bs-dismiss="modal">
+            <div class="col-2">
+              <img src="assets/images/pedidos/quitar.png" alt="" width="60%" class="me-3 mx-auto d-block">
+            </div>
+            <div class="btn-wrapper ms-2">
+              <b class="btn-title">Para retirar</b>
+              <i class="btn-transition"><br>El pedido se envasa para llevar.</i>
+            </div>
+          </button>
+
+          <button type="button" class="btn btn-modal m-1 text-start d-flex" (click)="setModalidad('Delivery')"
+            data-bs-dismiss="modal">
+            <div class="col-2">
+              <img src="assets/images/pedidos/entrega-de-comida.png" width="60%" class="me-3 mx-auto d-block">
+            </div>
+            <div class="btn-wrapper ms-2">
+              <b class="btn-title">Delivery</b>
+              <i class="btn-transition"><br>El pedido se entrega a su domicilio.</i>
+            </div>
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>

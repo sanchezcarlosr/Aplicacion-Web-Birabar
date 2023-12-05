@@ -1,0 +1,46 @@
+<div class="black-background text-light">
+    <div class="container pt-4 pb-5">
+        <h4 class="text-center mb-3">Gestión de Categoria</h4>
+        <div class="input-group mb-4">
+            <a class="btn btn-black bi bi-plus-circle" href="/alta-categoria/0"> Crear categoria</a>
+            <button class="btn btn-black bi bi-search" type="button"> Buscar categoria</button>
+            <input type="text" class="form-control" placeholder="Ingresar el username de una categoria. Ejemplo: Hamburguesa" [(ngModel)]="searchCategoria" (ngModelChange)="buscarPorCategoria()">
+        </div>
+        <div class="text-center border rounded-3 m-auto p-5" style="width: 300px;" *ngIf="listaCategorias.length==0">
+            <h4 class="bi bi-exclamation-octagon"></h4>
+            <h6 class="mb-3">No existen Categorias.</h6>
+            <a class="btn btn-light bi bi-plus-circle" href="/alta-categoria/0"> Crear categoria</a>
+        </div>
+        <div class="text-center table-responsive" *ngIf="listaCategorias.length!=0">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Nombre de categoria</th>
+                        <th scope="col">Productos</th>
+                        <th scope="col">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let categoria of listaCategorias">
+                        <td><img [src]="categoria.imagen" style="width: 30px;height:30px;"></td>
+                        <td>{{categoria.nombreCategoria}}</td>
+                        
+                        <td style="font-size: 18px;">
+                            <a class="btn btn-success bi bi-eye producto" (click)="verProductos(categoria._id)"
+                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .75rem; margin-top: 0;"></a>
+                        </td>
+
+                        <td style="font-size: 18px;">
+                            <a class="btn btn-primary bi bi-pencil-square producto" (click)="editarCategoria(categoria._id)"
+                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .75rem; margin-right: 3px;"></a>
+                            <a class="btn btn-danger bi bi-trash3 producto" (click)="eliminarCategoria(categoria._id)"
+                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .75rem; margin-top: 0;"></a>
+                        </td>
+
+                    </tr>   
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

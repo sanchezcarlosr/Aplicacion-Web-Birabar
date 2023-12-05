@@ -1,0 +1,72 @@
+.black-dark-background {
+    background-color: #141a24
+}
+
+.btn-link {
+    color: black;
+}
+
+i {
+    font-size: 1.5rem;
+    color: white;
+}
+
+.btn-prods {
+    border-style: none;
+}
+
+.bi-dash-circle:hover {
+    text-shadow: 0 0 10px red;
+}
+
+.bi-plus-circle:hover {
+    text-shadow: 0 0 10px rgb(9, 233, 9);
+}
+
+.image-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-container img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.link-light:hover {
+    cursor: pointer;
+}
+
+.modal-header,
+.modal-body,
+.modal-footer {
+    border-color: #141a24;
+}
+
+.img-opacity {
+    opacity: 0.3;
+}
+
+.dark-container select {
+    color: #fff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7em center;
+    background-size: 1.5em 1.5em;
+    border-color: #7a7a7a;
+}
+
+.dark-container select option {
+    background-color: #555;
+    color: #fff;
+}
+
+.dark-container select:focus {
+    box-shadow: none;
+    border-color: white;
+    outline: none;
+}

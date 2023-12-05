@@ -1,0 +1,52 @@
+<div class="black-background text-white pb-5">
+    <div class="justify-content-center align-content-center text-center pt-3 pb-4">
+        <h3 class="display-6">Ponte en contacto</h3>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="section m-2">
+                <div class="icon">
+                    <i class="fas fa-map-marker-alt fa-lg"></i>
+                </div>
+                <h2 class="display-6">Dirección</h2>
+                <p>{{restobar.direccionLocal}}</p>
+            </div>
+            <div class="section m-2">
+                <div class="icon">
+                    <i class="fas fa-phone fa-lg"></i>
+                </div>
+                <h2 class="display-6">Teléfono</h2>
+                <p>{{restobar.telefonoLocal}}</p>
+            </div>
+            <div class="section m-2">
+                <div class="icon">
+                    <i class="fas fa-envelope fa-lg"></i>
+                </div>
+                <h2 class="display-6">Email</h2>
+                <p>{{restobar.emailLocal}}</p>
+            </div>
+            <div class="section m-2">
+                <div class="icon">
+                    <i class="fas fa-truck fa-lg"></i>
+                </div>
+                <h2 class="display-6">Delivery</h2>
+                <p>
+                    Servicio:
+                    <span [ngClass]="{ 'text-success fw-bold': restobar.delivery, 'text-danger': !restobar.delivery }">
+                        {{ restobar.delivery ? 'Disponible' : 'No disponible' }}
+                    </span>
+                </p>
+            </div>
+            <div class="section m-2">
+                <div class="icon">
+                    <i class="fas fa-store fa-lg"></i>
+                </div>
+                <h2 class="display-6">Local</h2>
+                <p>
+                    Estado:
+                    <span [ngClass]="{ 'text-success fw-bold': restobar.abierto, 'text-danger': !restobar.abierto }">
+                        {{ restobar.abierto ? 'Abierto' : 'Cerrado' }}
+                    </span>
+                </p>
+            </div>
+        </div>

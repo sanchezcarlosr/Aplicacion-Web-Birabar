@@ -1,0 +1,222 @@
+<div class="black-background">
+    <div class="container pt-4 pb-5 text-light">
+        <h4 class="text-center mb-3">Gestión de Ofertas</h4>
+        <!-- Formulario -->
+        <div class="border rounded-3 border-secondary p-4">
+            <form #ofertaForm="ngForm">
+                <input type="text" name="id" [(ngModel)]="oferta._id" disabled hidden>
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label class="form-text text-secondary">Nombre de la oferta:</label>
+                        <input type="email" class="form-control" name="titulo" placeholder="EJ: Happy Hour"
+                            autocomplete="off" [(ngModel)]="oferta.titulo" required #titulo="ngModel">
+                        <div *ngIf="titulo.invalid && titulo.dirty" class="text-danger">
+                            <div *ngIf="titulo.errors?.['required']">
+                                El nombre es requerido.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-text text-secondary">Precio:</label>
+                        <input type="number" class="form-control" name="precio" placeholder="EJ: 500" autocomplete="off"
+                            [(ngModel)]="oferta.precio" required #precio="ngModel" min="1">
+                        <div *ngIf="precio.invalid && precio.dirty" class="text-danger">
+                            <div *ngIf="precio.errors?.['required']">
+                                El precio es requerido.
+                            </div>
+                            <div *ngIf="precio.errors?.['min']">
+                                El precio no puede ser nulo o negativo.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-text text-secondary">
+                            <span class="bi bi-eye-fill me-2 link-green" *ngIf="oferta.imagen" data-bs-toggle="modal"
+                                data-bs-target="#imagenModal"></span>
+                            Subir imagen de la oferta:
+                        </label>
+                        <input type="file" class="form-control" name="imagen" ngModel [required]="accion==='new'" #imagen="ngModel"
+                            (change)="onFileSeleccionado($event)">
+                        <div *ngIf="imagen.invalid && imagen.touched" class="text-danger">
+                            <div *ngIf="!oferta.imagen">
+                                Debe seleccionar una imagen.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-text text-secondary d-block">Días que estará disponible la oferta:</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="lunes" [(ngModel)]="lunes">
+                        <label class="form-check-label">Lunes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="martes" [(ngModel)]="martes">
+                        <label class="form-check-label">Martes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="miercoles" [(ngModel)]="miercoles">
+                        <label class="form-check-label">Miercoles</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="jueves" [(ngModel)]="jueves">
+                        <label class="form-check-label">Jueves</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="viernes" [(ngModel)]="viernes">
+                        <label class="form-check-label">Viernes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="sabado" [(ngModel)]="sabado">
+                        <label class="form-check-label">Sabádo</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="domingo" [(ngModel)]="domingo">
+                        <label class="form-check-label">Domingo</label>
+                    </div>
+                    <span *ngIf="!verificarCheboxes()" class="form-text text-secondary">No hay días
+                        seleccionados.</span>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-text text-secondary">Comienza desde las:</label>
+                        <input type="time" class="form-control" name="desde" [(ngModel)]="oferta.desde" required
+                            #desde="ngModel">
+                        <div *ngIf="desde.invalid && desde.dirty && desde.touched" class="text-danger">
+                            <div *ngIf="desde.errors?.['required']">
+                                Debe seleccionar una hora de inicio.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-text text-secondary">Termina a las:</label>
+                        <input type="time" class="form-control" name="hasta" [(ngModel)]="oferta.hasta" required
+                            #hasta="ngModel">
+                        <div *ngIf="hasta.invalid && hasta.dirty && hasta.touched" class="text-danger">
+                            <div *ngIf="hasta.errors?.['required']">
+                                Debe seleccionar una hora de fin.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-text text-secondary">Descripción:</label>
+                    <textarea class="form-control" rows="3"
+                        placeholder="EJ: Cada cerveza que aparece en la oferta cuesta $500." name="descripcion"
+                        [(ngModel)]="oferta.descripcion"></textarea>
+                </div>
+                <div class="mb-3 text-center">
+                    <button type="button" class="btn green-background bi bi-cart" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                        Seleccionar Productos
+                    </button>
+                    <p *ngIf="oferta.productos.length==0" class="form-text text-secondary">No hay productos
+                        seleccionados.</p>
+                </div>
+                <button *ngIf="accion=='new'" type="submit" class="btn green-background bi bi-plus-circle me-1"
+                    [disabled]="!ofertaForm.valid || oferta.productos.length==0 || !verificarCheboxes()"
+                    (click)="crearOferta()"> Crear</button>
+                <button *ngIf="accion=='update'" type="submit" class="btn green-background bi bi-pencil-square me-1"
+                    [disabled]="!ofertaForm.valid || oferta.productos.length==0 || !verificarCheboxes()"
+                    (click)="modificarOferta()"> Modificar</button>
+                <a [href]="['ofertaGestion']" class="btn btn-light bi bi-arrow-left"> Volver</a>
+            </form>
+        </div>
+        <!-- Fin del Formulario -->
+        <div class="modal fade" id="imagenModal" tabindex="-1" aria-labelledby="imagenModal" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content black-background">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Vista Previa</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div style="height: 200px;width: 200px;" class="mx-auto">
+                            <img [src]="oferta.imagen" class="object-fit-cover h-100 w-100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Seleccionar Productos -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content black-background">
+                    <div class="modal-header">
+                        <nav class="navbar navbar-expand">
+                            <div class="container-fluid">
+                                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                                    <div class="navbar-nav mx-auto">
+                                        <a class="nav-link active bi bi-basket3" onclick="selectTab(this)"
+                                            data-tab="oferta" (click)="buscarProducto = false"> Productos en la
+                                            Oferta</a>
+                                        <a class="nav-link bi bi-search" onclick="selectTab(this)" data-tab="producto"
+                                            (click)="buscarProducto = true;"> Buscar Productos</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="modal-body">
+                        <div *ngIf="oferta.productos.length==0 && buscarProducto == false;" class="text-center">
+                            <h6 class="text-start ms-3">No hay productos seleccionados.</h6>
+                        </div>
+                        <div *ngIf="buscarProducto">
+                            <div class="input-group mb-3">
+                                <button class="btn green-background bi bi-search" type="button" (click)="buscarPorNombreProducto()">
+                                    Buscar</button>
+                                <input type="text" class="form-control" placeholder="EJ: Pizza" [(ngModel)]="searchProducto"
+                                    (ngModelChange)="buscarPorNombreProducto()">
+                            </div>
+                            <div *ngIf="productos.length==0" class="text-center">
+                                <h6 class="text-start ms-3">Debe crear productos. <a class="link-green"
+                                        href="/gestion-productos">Gestión Productos</a></h6>
+                            </div>
+                            <div *ngIf="productos.length!=0">
+                                <div class="card mb-3" *ngFor="let p of productos">
+                                    <div class="row g-0">
+                                        <div class="col-md-4">
+                                            <img [src]="p.imagen" class="img-fluid rounded-start">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{p.nombreProducto}}</h5>
+                                                <p class="card-text">{{p.descripcion}}</p>
+                                                <p class="card-text text-body-secondary">{{p.precio | currency:'$'}}</p>
+                                                <button type="button" class="btn btn-dark bi bi-plus-circle"
+                                                    (click)="agregarProductoToOferta(p)"> Agregar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="buscarProducto == false && oferta.productos.length!=0">
+                            <div class="card mb-3" *ngFor="let p of productosOferta">
+                                <div class="row g-0">
+                                    <div class="col-sm-4">
+                                        <img [src]="p.imagen" class="img-fluid rounded-start">
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{p.nombreProducto}}</h5>
+                                            <p class="card-text">{{p.descripcion}}</p>
+                                            <p class="card-text text-body-secondary">{{p.precio | currency:'$'}}</p>
+                                            <button class="btn btn-danger bi bi-dash-circle"
+                                                (click)="quitarProductoToOferta(p._id)"> Quitar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <span class="m-auto">Productos Seleccionados: <b>{{oferta.productos.length}}</b></span>
+                        <button type="button" class="btn green-background" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

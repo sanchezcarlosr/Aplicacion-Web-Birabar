@@ -1,0 +1,189 @@
+<div class="black-dark-background">
+    <div class="container p-4 text-center">
+        <!-- Pedidos -->
+        <legend class="text-white">Tus Pedidos</legend>
+        <nav class="navbar navbar-expand">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav mx-auto">
+                        <a class="nav-link active" onclick="selectTab(this)" data-tab="finalizados"
+                            (click)="tabActiva('En curso')">En curso</a>
+                        <a class="nav-link" onclick="selectTab(this)" data-tab="en-curso"
+                            (click)="tabActiva('Finalizados')">Finalizados</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <section>
+            <div class="text-center mt-4" *ngIf="navSelected==true">
+                <div *ngIf="pedidosEnCurso.length == 0">
+                    <img src="assets/images/pedidos/lupulo.png" alt="" class="img-fluid img-opacity"
+                        width="150px">
+                    <p class="mt-4 text-white"><i>No tenés ningún pedido en curso.</i></p>
+                </div>
+                <div *ngIf="pedidosEnCurso.length != 0">
+                    <div class="row" *ngFor="let pec of pedidosEnCurso">
+                        <div class="card col-md-6 offset-md-3 mb-3 bg-dark bg-gradient text-white">
+                            <div class="card-header text-start small">
+                                IdPedido: {{pec._id}}
+                            </div>
+                            <div class="card-body text-start">
+                                <h5 class="card-title"><i class="fa-solid fa-circle-check me-2"
+                                        style="color: #22a03b;"></i>¡El restaurante recibió tu pedido!</h5>
+                                <p class="card-text">Estado: {{pec.estado}} - Demora: {{pec.demora}} minutos - Servicio:
+                                    {{pec.modalidad}}</p>
+                                <div class="text-end">
+                                    <button type="button" class="btn btn-bg-black" data-bs-toggle="modal"
+                                    data-bs-target="#detalleModal" (click)="getPedido(pec)"><i class="bi bi-file-earmark-text"></i>
+                                        Ver detalle
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-success mt-3 mb-2" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"><i class="fa-solid fa-plus me-1"></i> Nuevo pedido</button>
+
+                <!-- Seleccionar modalidad -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content text-white black-dark-background">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">¿Qué te gustaria?</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body ">
+                                <div class="row pe-4 ps-4">
+                                    <button type="button" class="btn btn-modal m-1 text-start d-flex"
+                                        (click)="setModalidad('En el local')" data-bs-dismiss="modal">
+                                        <div class="col-2">
+                                            <img src="assets/images/pedidos/food-and-restaurant.png" alt=""
+                                                width="60%" class="me-3 mx-auto d-block">
+                                        </div>
+                                        <div class="btn-wrapper ms-2">
+                                            <b class="btn-title ">Comer en el local</b>
+                                            <i class="btn-transition"><br>El pedido se sirve en el restaurante.</i>
+                                        </div>
+                                    </button>
+
+                                    <button type="button" class="btn btn-modal m-1 text-start d-flex"
+                                        (click)="setModalidad('Retiro')" data-bs-dismiss="modal">
+                                        <div class="col-2">
+                                            <img src="assets/images/pedidos/quitar.png" alt="" width="60%"
+                                                class="me-3 mx-auto d-block">
+                                        </div>
+                                        <div class="btn-wrapper ms-2">
+                                            <b class="btn-title">Para retirar</b>
+                                            <i class="btn-transition"><br>El pedido se envasa para llevar.</i>
+                                        </div>
+                                    </button>
+
+                                    <button type="button" class="btn btn-modal m-1 text-start d-flex"
+                                        (click)="setModalidad('Delivery')" data-bs-dismiss="modal">
+                                        <div class="col-2">
+                                            <img src="assets/images/pedidos/entrega-de-comida.png"
+                                                width="60%" class="me-3 mx-auto d-block">
+                                        </div>
+                                        <div class="btn-wrapper ms-2">
+                                            <b class="btn-title">Delivery</b>
+                                            <i class="btn-transition"><br>El pedido se entrega a su domicilio.</i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4" *ngIf="navSelected==false">
+                <div *ngIf="pedidosFinalizados.length == 0">
+                    <img src="assets/images/pedidos/lupulo.png" alt="" class="img-fluid img-opacity"
+                        width="150px">
+                    <p class="mt-4 text-white"><i>No tenés ningún pedido finalizado.</i></p>
+                </div>
+                <div *ngIf="pedidosFinalizados.length != 0">
+                    <div class="row" *ngFor="let pf of pedidosFinalizados">
+                        <div class="card col-md-6 offset-md-3 mb-3 bg-dark bg-gradient text-white">
+                            <div class="card-header text-start small">
+                                IdPedido: {{pf._id}}
+                            </div>
+                            <div class="card-body text-start">
+                                <h5 class="card-title" *ngIf="pf.estado == 'Cancelado'">
+                                    <i class="fa-solid fa-heart-crack" style="color: #d46767;"></i>
+                                    Hemos cancelado tu pedido... lamentamos los inconvenientes.
+                                </h5>
+                                <h5 class="card-title" *ngIf="pf.estado == 'Finalizado'">
+                                    <i class="fa-solid fa-circle-check" style="color: #22a03b;"></i>
+                                    ¡Hemos finalizado tu pedido y está listo para ser entregado!
+                                </h5>
+                                <p *ngIf="pf.estado == 'Finalizado'" class="card-text">Estado: {{pf.estado}} - Demora:
+                                    {{pf.demora}} - Servicio: {{pf.modalidad}}</p>
+                                <div class="text-end">
+                                    <button type="button" class="btn btn-bg-black" data-bs-toggle="modal"
+                                    data-bs-target="#detalleModal" (click)="getPedido(pf)">
+                                        <i class="bi bi-file-earmark-text"></i>
+                                        Ver detalle
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="detalleModal" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-content text-white black-dark-background">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="detalleModalLabel">Detalle del pedido</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-start">
+                        <p class="card-text" *ngFor="let d of pedido.detalleProductos">
+                            <img src="{{d.producto.imagen}}" alt="" width="10%"> {{d.cantidad}} x {{d.producto.nombreProducto}} - Precio U.: {{d.producto.precio | currency: '$'}} - Subtotal: {{d.subtotal | currency: '$'}}
+                        </p>
+                        <p>
+                            <i class="bi bi-check-circle-fill text-success"></i> Total: {{pedido.total | currency: '$'}}
+                            <br><i class="bi bi-check-circle-fill text-success"></i> Forma de pago: {{pedido.formaDePago}} 
+                            <br><i class="bi bi-check-circle-fill text-success"></i> Tipo de servicio: {{pedido.modalidad}} 
+                            <br><i class="bi bi-check-circle-fill text-success"></i> Estado del pedido: {{pedido.estado}} 
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                      <button *ngIf="pedido.estado == 'Pendiente'" type="button" class="btn btn-danger" (click)="cancelarPedido(pedido._id)" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancelar pedido</button>
+                      <button *ngIf="(pedido.estado == 'Finalizado' || pedido.estado == 'Cancelado') && pedido.calificacion == null" type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="calificarPedido(pedido._id)"><i class="fa-solid fa-pencil me-2"></i>Calificar</button>
+                      <button *ngIf="(pedido.estado == 'Finalizado' || pedido.estado == 'Cancelado') && pedido.calificacion != null" type="button" class="btn btn-success" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" (click)="getCalificacionPedido(pedido._id)"><i class="fa-solid fa-star me-2"></i>Ver calificación</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content text-white black-dark-background">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Tu calificación del pedido</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-start" *ngIf="pedido.calificacion != null">
+                      <i class="bi bi-calendar-check"></i> Fecha: {{pedido.calificacion.fecha}}
+                      <br><i class="bi bi-star-fill"></i> Puntaje: {{pedido.calificacion.puntaje}}/5
+                      <br><i class="fa-solid fa-comment"></i> Observacion: {{pedido.calificacion.observacion}} <i *ngIf="pedido.calificacion.observacion == null"> - </i>
+                    </div>
+                    <div class="modal-footer">
+                      <button class="btn btn-secondary" data-bs-target="#detalleModal" data-bs-toggle="modal">Volver al detalle</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </section>
+    </div>
+</div>

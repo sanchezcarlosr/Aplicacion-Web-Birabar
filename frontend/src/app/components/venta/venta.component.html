@@ -1,0 +1,122 @@
+<div class="black-dark-background">
+    <div class="container text-center text-white pb-4">
+        <legend class="mt-4 mb-4">Listado de ventas</legend>
+        <p>Filtrar por:</p>
+        <div class="row">
+            <div class="mb-2 col-md-4">
+                <label for="fechaDesde" class="mb-2">Fecha (desde):</label>
+                <input type="date" id="fechaDesde" class="form-control" [(ngModel)]="fechaDesde" name="fechaDesdeS" required>
+            </div>
+            <div class="mb-2 col-md-4">
+                <label for="fechaHasta" class="mb-2">Fecha (hasta):</label>
+                <input type="date" id="fechaHasta" class="form-control" [(ngModel)]="fechaHasta" name="fechaHastaS" required>
+            </div>
+            <div class="mb-2 col-md-4">
+                <label for="usuario" class="mb-2">Usuario:</label>
+                <select name="usuarioS" id="usuario" class="form-select" [(ngModel)]="usuario">
+                    <option *ngFor="let u of usuarios" [ngValue]="u.user">{{u.user}} ({{u.nombre}} {{u.apellido}})</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-success mt-4 me-1" [disabled]="fechaDesde == '' && fechaHasta == '' && usuario == ''" (click)="filtrarVentas()">Aplicar filtros</button>
+        <button type="button" class="btn btn-secondary mt-4 ms-1" onclick="location.reload()" *ngIf="fechaDesde != '' || fechaHasta != '' || usuario != ''">
+            Reestablecer
+        </button>
+
+        <div class="table-responsive">
+            <table class="table mt-4">
+                <thead>
+                    <tr>
+                        <th scope="col">IDVenta</th>
+                        <th scope="col">IDPedido</th>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Categorías de productos</th>
+                        <th scope="col">Calificación</th>
+                        <th scope="col">Información referida</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let v of ventas">
+                    <tr>
+                        <th>{{v._id}}</th>
+                        <td>{{v.pedido._id}}</td>
+                        <td>{{v.pedido.cliente.usuario.user}}</td>
+                        <td>{{v.fecha | date: 'dd/MM/YYYY'}}</td>
+                        <td class="text-start">
+                            <ul>
+                                <li *ngFor="let d of v.pedido.detalleProductos">{{d.producto.categoria.nombreCategoria}}
+                                </li>
+                            </ul>
+                        </td>
+                        <td *ngIf="v.pedido.calificacion != null" class="text-start">
+                            <ul>
+                                <li>Puntaje: {{v.pedido.calificacion.puntaje}}/5</li>
+                                <li *ngIf="v.pedido.calificacion.observacion != null">Observación:
+                                    {{v.pedido.calificacion.observacion}}</li>
+                                <li *ngIf="v.pedido.calificacion.observacion == null">Observación: <i>Sin
+                                        observación</i></li>
+                            </ul>
+                        </td>
+                        <td *ngIf="v.pedido.calificacion == null">
+                            <i>Sin calificación</i>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-dark" (click)="setVenta(v)" data-bs-toggle="modal" data-bs-target="#infoVentaModal">Ver más</button>
+
+                            <div class="modal fade" id="infoVentaModal" tabindex="-1"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-6" id="exampleModalLabel"><i
+                                                    class="bi bi-file-earmark-text"></i> ID Venta: {{venta._id}}</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-start" *ngIf="venta!=null">
+                                            <i class="fa-regular fa-calendar-check"></i> Fecha: {{venta.fecha}}
+                                            <br><i class="fa-solid fa-money-check-dollar"></i> Forma de pago: {{venta.pedido.formaDePago}}
+                                            <br><i class="fa-solid fa-hand-holding-dollar mb-4"></i> Total: {{venta.pedido.total | currency: '$'}}
+                                            <br><i class="fa-solid fa-pizza-slice"></i> Pedido:
+                                            <ul class="ms-2">
+                                                <li>Id: {{venta.pedido._id}}</li>
+                                                <li>Estado: {{venta.pedido.estado}} </li>
+                                                <li>Demora: {{venta.pedido.demora}} minutos</li>
+                                                <li>Servicio: {{venta.pedido.modalidad}} </li>
+                                                <li>Productos:
+                                                    <ul>
+                                                        <li *ngFor="let d of venta.pedido.detalleProductos">{{d.producto.categoria.nombreCategoria}}: {{d.producto.nombreProducto}} x {{d.cantidad}} - Subtotal: {{d.subtotal | currency: '$'}}</li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                            <i class="fa-solid fa-user-check"></i> Cliente:
+                                            <ul class="ms-2">
+                                                <li>Nombre: {{venta.pedido.cliente.usuario.nombre}} {{venta.pedido.cliente.usuario.apellido}}</li>
+                                                <li>Usuario: {{venta.pedido.cliente.usuario.user}}</li>
+                                                <li>Direccion: {{venta.pedido.cliente.direccion}}</li>
+                                                <li>Email: {{venta.pedido.cliente.email}}</li>
+                                                <li>Teléfono: {{venta.pedido.cliente.telefono}}</li>
+                                            </ul>
+                                            <i class="fa-solid fa-star"></i> Calificación: <i *ngIf="venta.pedido.calificacion==null">Sin calificación<br></i>
+                                            <ul class="ms-2" *ngIf="venta.pedido.calificacion!=null">
+                                                <li>Puntaje: {{venta.pedido.calificacion.puntaje}}/5</li>
+                                                <li>Observacion: 
+                                                    <i *ngIf="venta.pedido.calificacion.observacion==null">Sin observación</i>
+                                                    <i *ngIf="venta.pedido.calificacion.observacion!=null">{{venta.pedido.calificacion.observacion}}</i>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
